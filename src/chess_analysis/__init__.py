@@ -3,11 +3,31 @@ from typing import Tuple, Union
 import chess
 import chess.pgn
 
+
 def load_from_pgn(pgn: str) -> Union[chess.pgn.Game, None]:
+    '''
+    Load a game from a PGN string
+
+    Args:
+        pgn (str): The PGN string
+
+    Returns:
+        Union[chess.pgn.Game, None]: The game object if the PGN is valid, None otherwise
+    '''
     io_pgn = io.StringIO(pgn)
     return chess.pgn.read_game(io_pgn)
 
 def get_board_after_moves(game: chess.pgn.Game, moves: list[str]) -> chess.Board:
+    '''
+    Get the board after a list of moves
+
+    Args:
+        game (chess.pgn.Game): The game object
+        moves (list[str]): The list of moves
+
+    Returns:
+        chess.Board: The board after the moves
+    '''
     board = game.board()
     for move in moves:
         move = board.parse_san(move)
@@ -20,8 +40,15 @@ def get_board_after_moves(game: chess.pgn.Game, moves: list[str]) -> chess.Board
 
 
 def check_fork_in_position(board: chess.Board) -> bool:
+    '''
+    Check if there is a fork in the current position
 
+    Args:
+        board (chess.Board): The board object
 
+    Returns:
+        bool: True if a fork is found, False otherwise
+    '''
     strong_pieces = [chess.ROOK, chess.QUEEN, chess.KING]
     for piece_type in [chess.PAWN, chess.KNIGHT, chess.ROOK, chess.BISHOP, chess.QUEEN]:
         for piece in board.pieces(piece_type, not board.turn):
@@ -52,6 +79,16 @@ def check_fork_in_position(board: chess.Board) -> bool:
     return False
 
 def check_fork_in_variant(board: chess.Board, variant: list[str]) -> Tuple[bool, Union[chess.Board, None]]:
+    '''
+    Check if there is a fork in a variant
+
+    Args:
+        board (chess.Board): The board in the initial position
+        variant (list[str]): The list of moves
+
+    Returns:
+        Tuple[bool, Union[chess.Board, None]]: A tuple with a boolean indicating if a fork is found and the board position
+    '''
     if check_fork_in_position(board):
         return True, board
 
@@ -68,6 +105,16 @@ def check_fork_in_variant(board: chess.Board, variant: list[str]) -> Tuple[bool,
     return False, None
 
 def check_stalemate_in_variant(board: chess.Board, variant: list[str]) -> Tuple[bool, Union[chess.Board, None]]:
+    '''
+    Check if there is a stalemate in a variant
+
+    Args:
+        board (chess.Board): The board in the initial position
+        variant (list[str]): The list of moves
+
+    Returns:
+        Tuple[bool, Union[chess.Board, None]]: A tuple with a boolean indicating if a stalemate is found and the board position
+    '''
     for move in variant:
         move = board.parse_san(move)
         if move in board.legal_moves:

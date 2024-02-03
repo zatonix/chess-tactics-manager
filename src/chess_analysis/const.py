@@ -1,2 +1,1 @@
-
 TACTIC_TYPE = [FORK, STALEMATE] = range(1, 3)
