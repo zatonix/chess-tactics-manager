@@ -3,7 +3,7 @@ from chess_analysis import load_from_pgn, get_board_after_moves, check_fork_in_v
 
 
 print('Loading games from lichess...')
-games = get_lichess_games("drougone", max=100, analysed=True)
+games = get_lichess_games("drougone", max_games=100, analysed=True)
 
 print(f'Loaded {len(games)} games')
 
