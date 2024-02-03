@@ -4,7 +4,7 @@ This module contains the functions to interact with the Lichess API
 import ndjson
 import requests
 
-def get_lichess_games(username: str) -> dict:
+def get_lichess_games(username: str, max: int = 100, analysed: bool = False) -> dict:
     '''
     Get the games of a user from Lichess
 
@@ -23,6 +23,8 @@ def get_lichess_games(username: str) -> dict:
         'opening': True,
         'accuracy': True,
         'pgnInJson': True,
+        'max': max,
+        'analysed': analysed
     }
 
     response = requests.get(f'https://lichess.org/api/games/user/{username}', headers=headers, params=params, timeout=60)
