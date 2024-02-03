@@ -130,3 +130,25 @@ def check_stalemate_in_variant(board: chess.Board, variant: list[str]) -> Tuple[
         return True, board
 
     return False, None
+
+def check_checkmate_in_variant(board: chess.Board,  variant: list[str]) -> Tuple[bool, Union[chess.Board, None]]:
+    '''
+    Check if there is a mate in a variant
+
+    Args:
+        board (chess.Board): The board in the initial position
+        variant (list[str]): The list of moves
+
+    Returns:
+        Tuple[bool, Union[chess.Board, None]]: A tuple with a boolean indicating if a mate is found and the board position
+    '''
+    for move in variant:
+        move = board.parse_san(move)
+        if move in board.legal_moves:
+            board.push(move)
+        else:
+            print(f"Move {move} is not legal in the current position")
+            break
+    if board.is_checkmate():
+        return True, board
+    return False, None

@@ -99,3 +99,22 @@ move was} 27... b6 28. Bxb6 Nb3 29. axb3+ Kxb3 30. Bxd4 Ba5 31. Rh4 Bxc7 32.
 Rxh7 Bf4 33. Rh4) 28. Rxd4# 1-0
 '''
 
+CHECKMATE_PGN = '''
+[Event "Live Chess"]
+[Site "Chess.com"]
+[Date "2023.10.02"]
+[Round "?"]
+[White "Drougone"]
+[Black "ellipse2v"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R2QKB1R w KQkq -"]
+[ECO "A00"]
+[WhiteElo "1609"]
+[BlackElo "546"]
+[TimeControl "600"]
+[EndTime "13:21:39 PDT"]
+[Termination "Drougone won by checkmate"]
+
+1. e4 e5 2. Bc4 d6 3. Qf3 b6 4. Qxf7# 1-0
+'''

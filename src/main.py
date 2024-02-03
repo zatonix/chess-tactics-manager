@@ -1,5 +1,5 @@
 from lichess.api import get_lichess_games, get_lichess_game_details
-from chess_analysis import load_from_pgn, get_board_after_moves, check_fork_in_variant, check_stalemate_in_variant
+from chess_analysis import load_from_pgn, get_board_after_moves, check_fork_in_variant, check_stalemate_in_variant, check_checkmate_in_variant
 
 
 print('Loading games from lichess...')
@@ -38,3 +38,8 @@ for game_index, game in enumerate(games, 1):
             if has_stalemate and stalemate_position is not None:
                 print(f"Stalemate found in position: \n{stalemate_position}")
                 print(stalemate_position.fen())
+
+            has_checkmate, checkmate_position = check_checkmate_in_variant(game_before_blunder.copy(), variant_moves)
+            if has_checkmate and checkmate_position is not None:
+                print(f"Checkmate found in position: \n{checkmate_position}")
+                print(checkmate_position.fen())
