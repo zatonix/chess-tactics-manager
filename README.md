@@ -19,7 +19,7 @@ This is a chess tactics trainer. It is a software for lichess game analysis and 
 
 ### Dependencies
 
-* Python >= 3.8
+* Python >= 3.9
 
 ### Installing
 
@@ -27,7 +27,7 @@ This is a chess tactics trainer. It is a software for lichess game analysis and 
 pip install -r requirements.txt -r requirements-dev.txt
 ```
 
-### Executing program
+### Running analysis
 
 ```bash
 python src/main.py
