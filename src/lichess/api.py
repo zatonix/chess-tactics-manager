@@ -1,8 +1,19 @@
-import json
+'''
+This module contains the functions to interact with the Lichess API
+'''
 import ndjson
 import requests
 
 def get_lichess_games(username: str) -> dict:
+    '''
+    Get the games of a user from Lichess
+
+    Args:
+        username (str): The username
+
+    Returns:
+        dict: The games of the user
+    '''
     headers = {
         'Accept': 'application/x-ndjson'
     }
@@ -19,6 +30,15 @@ def get_lichess_games(username: str) -> dict:
 
 
 def get_lichess_game_details(game_id: str) -> dict:
+    '''
+    Get the details of a game from Lichess
+
+    Args:
+        game_id (str): The game ID
+
+    Returns:
+        dict: The details of the game
+    '''
     headers = {
         'Accept': 'application/json'
     }

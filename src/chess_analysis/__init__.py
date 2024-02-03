@@ -1,3 +1,7 @@
+'''
+This module contains the functions to load a game from a PGN string, get the board after a list of moves,
+check if there is a fork in a position, check if there is a fork in a variant, check if there is a stalemate in a variant
+'''
 import io
 from typing import Tuple, Union
 import chess
@@ -56,18 +60,17 @@ def check_fork_in_position(board: chess.Board) -> bool:
             attacked_pieces = []
             for square in attacked_squares:
                 piece_on_square = board.piece_at(square)
-                if piece_on_square is None:
+                if piece_on_square is None or piece_on_square.color != board.turn:
                     continue
 
-                if piece_on_square.color == board.turn:
-                    if piece_type == chess.PAWN and piece_on_square.piece_type != chess.PAWN:
+                if piece_type == chess.PAWN and piece_on_square.piece_type != chess.PAWN:
+                    attacked_pieces.append(piece_on_square)
+                elif piece_type not in strong_pieces and piece_on_square.piece_type in strong_pieces:
+                    attacked_pieces.append(piece_on_square)
+                else:
+                    defenders = board.attackers(board.turn, square)
+                    if len(defenders) == 0:
                         attacked_pieces.append(piece_on_square)
-                    elif piece_type not in strong_pieces and piece_on_square.piece_type in strong_pieces:
-                        attacked_pieces.append(piece_on_square)
-                    else:
-                        defenders = board.attackers(board.turn, square)
-                        if len(defenders) == 0:
-                            attacked_pieces.append(piece_on_square)
 
             attackers = board.attackers(board.turn, piece)
 
