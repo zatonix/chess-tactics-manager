@@ -25,7 +25,7 @@ def get_lichess_games(username: str) -> dict:
         'pgnInJson': True,
     }
 
-    response = requests.get(f'https://lichess.org/api/games/user/{username}', headers=headers, params=params)
+    response = requests.get(f'https://lichess.org/api/games/user/{username}', headers=headers, params=params, timeout=60)
     return ndjson.loads(response.content)
 
 
@@ -43,6 +43,6 @@ def get_lichess_game_details(game_id: str) -> dict:
         'Accept': 'application/json'
     }
 
-    response = requests.get(f'https://lichess.org/game/export/{game_id}', headers=headers)
+    response = requests.get(f'https://lichess.org/game/export/{game_id}', headers=headers, timeout=60)
 
     return response.json()
