@@ -11,11 +11,6 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 ![Made with love in France](https://madewithlove.now.sh/fr?heart=true)
 
-
-
-
-
-
 ## Description
 
 This is a chess tactics trainer. It is a software for lichess game analysis and tactics training.
