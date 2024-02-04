@@ -65,7 +65,7 @@ export default function Home() {
         </div>}
         {missedTactics.length > 0 && <div className="mt-8">
            <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-            Find {filterTactics.length} missed tactics
+            Found {filterTactics.length} missed tactics
           </h2>
 
           <RadioGroup value={filter} className="grid-flow-col mt-4 mb-8" orientation="horizontal" onValueChange={(value) => setFilter(value)}>
