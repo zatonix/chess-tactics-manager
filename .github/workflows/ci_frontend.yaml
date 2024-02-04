@@ -1,0 +1,33 @@
+name: Check application build
+
+on:
+  pull_request:
+    paths:
+      - 'app/**'
+
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./app
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint with ESLint
+        run: npm run lint
+
+      - name: Build with Next.js
+        run: npm run build

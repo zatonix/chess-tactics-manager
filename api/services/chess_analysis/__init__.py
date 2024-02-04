@@ -8,7 +8,7 @@ from typing import Tuple, Union
 import chess
 import chess.pgn
 
-from services.chess_analysis.types import TacticType, MissedTactic, BlunderContext
+from services.chess_analysis.types import TacticType, MissedTactic, MissedFork, BlunderContext, Fork
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +48,7 @@ def get_board_after_moves(game: chess.pgn.Game, moves: list[str]) -> chess.Board
     return board
 
 
-def check_fork_in_position(board: chess.Board) -> bool:
+def check_fork_in_position(board: chess.Board, color: chess.Color) -> Union[Fork, None]:
     '''
     Check if there is a fork in the current position
 
@@ -60,33 +60,36 @@ def check_fork_in_position(board: chess.Board) -> bool:
     '''
     strong_pieces = [chess.ROOK, chess.QUEEN, chess.KING]
     for piece_type in [chess.PAWN, chess.KNIGHT, chess.ROOK, chess.BISHOP, chess.QUEEN]:
-        for piece in board.pieces(piece_type, not board.turn):
+        for piece in board.pieces(piece_type, color):
             attacked_squares = board.attacks(piece)
             attacked_pieces = []
             for square in attacked_squares:
                 piece_on_square = board.piece_at(square)
-                if piece_on_square is None or piece_on_square.color != board.turn:
+                if piece_on_square is None or piece_on_square.color == color:
                     continue
 
                 if piece_type == chess.PAWN and piece_on_square.piece_type != chess.PAWN:
-                    attacked_pieces.append(piece_on_square)
+                    attacked_pieces.append(square)
                 elif piece_type not in strong_pieces and piece_on_square.piece_type in strong_pieces:
-                    attacked_pieces.append(piece_on_square)
+                    attacked_pieces.append(square)
                 else:
-                    defenders = board.attackers(board.turn, square)
+                    defenders = board.attackers(not color, square)
                     if len(defenders) == 0:
-                        attacked_pieces.append(piece_on_square)
+                        attacked_pieces.append(square)
 
-            attackers = board.attackers(board.turn, piece)
+            attackers = board.attackers(not color, piece)
 
             if len(attackers) == 0 and len(attacked_pieces) >= 2:
                 logger.info(f"Fork found at {chess.SQUARE_NAMES[piece]}")
 
-                return True
+                return Fork(
+                    attacker=chess.SQUARE_NAMES[piece],
+                    attacked=[chess.SQUARE_NAMES[square] for square in attacked_pieces],
+                )
 
-    return False
+    return None
 
-def check_fork_in_variant(board: chess.Board, variant: list[str], context: BlunderContext) -> Union[MissedTactic, None]:
+def check_fork_in_variant(board: chess.Board, variant: list[str], context: BlunderContext) -> Union[MissedFork, None]:
     '''
     Check if there is a fork in a variant
 
@@ -97,32 +100,23 @@ def check_fork_in_variant(board: chess.Board, variant: list[str], context: Blund
     Returns:
         Tuple[bool, Union[chess.Board, None]]: A tuple with a boolean indicating if a fork is found and the board position
     '''
-    if check_fork_in_position(board):
-        return MissedTactic(
-            type=TacticType.FORK,
-            fen=board.fen(),
-            variant=variant,
-            white_player=context.white_player,
-            black_player=context.black_player,
-            game_id=context.game_id,
-            move_number=context.move_number,
-            fen_before_blunder=context.fen_before_blunder
-        )
+    fork = check_fork_in_position(board, chess.WHITE if context.is_white else chess.BLACK)
+    if fork is not None:
+        return None
 
-    for move in variant:
+    for index, move in enumerate(variant, 1):
         move = board.parse_san(move)
         if move in board.legal_moves:
             board.push(move)
-            if check_fork_in_position(board):
-                return MissedTactic(
-                    type=TacticType.FORK,
+            fork = check_fork_in_position(board, chess.WHITE if context.is_white else chess.BLACK)
+            if fork is not None:
+                return MissedFork(
                     fen=board.fen(),
                     variant=variant,
-                    fen_before_blunder=context.fen_before_blunder,
-                    white_player=context.white_player,
-                    black_player=context.black_player,
-                    game_id=context.game_id,
-                    move_number=context.move_number
+                    move_number=index,
+                    context=context,
+                    attacker=fork.attacker,
+                    attacked=fork.attacked
                 )
         else:
             logger.error(f"Move {move} is not legal in the current position")
@@ -154,11 +148,8 @@ def check_stalemate_in_variant(board: chess.Board, variant: list[str], context: 
             type=TacticType.STALEMATE,
             fen=board.fen(),
             variant=variant,
-            fen_before_blunder=context.fen_before_blunder,
-            white_player=context.white_player,
-            black_player=context.black_player,
-            game_id=context.game_id,
-            move_number=context.move_number
+            context=context,
+            move_number=len(variant)
         )
 
     return None
@@ -181,15 +172,13 @@ def check_checkmate_in_variant(board: chess.Board,  variant: list[str], context:
         else:
             logger.error(f"Move {move} is not legal in the current position")
             break
+
     if board.is_checkmate():
         return MissedTactic(
             type=TacticType.CHECKMATE,
             fen=board.fen(),
             variant=variant,
-            fen_before_blunder=context.fen_before_blunder,
-            white_player=context.white_player,
-            black_player=context.black_player,
-            game_id=context.game_id,
-            move_number=context.move_number
+            context=context,
+            move_number=len(variant)
         )
     return None

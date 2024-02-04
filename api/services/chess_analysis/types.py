@@ -7,19 +7,23 @@ class TacticType(str, Enum):
     STALEMATE = 'stalemate'
     CHECKMATE = 'checkmate'
 
+class BlunderContext(BaseModel):
+    white_player: str
+    black_player: str
+    is_white: bool
+    game_id: str
+    fen_before_blunder: str
+    wrong_move: str
 class MissedTactic(BaseModel):
     type: TacticType
     fen: str
-    fen_before_blunder: str
     variant: list[str]
-    white_player: str
-    black_player: str
-    game_id: str
     move_number: int
-
-class BlunderContext(BaseModel):
-    move_number: int
-    white_player: str
-    black_player: str
-    game_id: str
-    fen_before_blunder: str
+    context: BlunderContext
+class MissedFork(MissedTactic):
+    type: TacticType = TacticType.FORK
+    attacker: str
+    attacked: list[str]
+class Fork(BaseModel):
+    attacker: str
+    attacked: list[str]
