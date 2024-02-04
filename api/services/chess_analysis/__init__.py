@@ -3,9 +3,14 @@ This module contains the functions to load a game from a PGN string, get the boa
 check if there is a fork in a position, check if there is a fork in a variant, check if there is a stalemate in a variant
 '''
 import io
+import logging
 from typing import Tuple, Union
 import chess
 import chess.pgn
+
+from services.chess_analysis.types import TacticType, MissedTactic, BlunderContext
+
+logger = logging.getLogger(__name__)
 
 
 def load_from_pgn(pgn: str) -> Union[chess.pgn.Game, None]:
@@ -38,7 +43,7 @@ def get_board_after_moves(game: chess.pgn.Game, moves: list[str]) -> chess.Board
         if move in board.legal_moves:
             board.push(move)
         else:
-            print(f"Move {move} is not legal in the current position")
+            logger.error(f"Move {move} is not legal in the current position")
             break
     return board
 
@@ -75,13 +80,13 @@ def check_fork_in_position(board: chess.Board) -> bool:
             attackers = board.attackers(board.turn, piece)
 
             if len(attackers) == 0 and len(attacked_pieces) >= 2:
-                print(f"Fork found at {chess.SQUARE_NAMES[piece]}")
+                logger.info(f"Fork found at {chess.SQUARE_NAMES[piece]}")
 
                 return True
 
     return False
 
-def check_fork_in_variant(board: chess.Board, variant: list[str]) -> Tuple[bool, Union[chess.Board, None]]:
+def check_fork_in_variant(board: chess.Board, variant: list[str], context: BlunderContext) -> Union[MissedTactic, None]:
     '''
     Check if there is a fork in a variant
 
@@ -93,21 +98,39 @@ def check_fork_in_variant(board: chess.Board, variant: list[str]) -> Tuple[bool,
         Tuple[bool, Union[chess.Board, None]]: A tuple with a boolean indicating if a fork is found and the board position
     '''
     if check_fork_in_position(board):
-        return True, board
+        return MissedTactic(
+            type=TacticType.fork,
+            fen=board.fen(),
+            variant=variant,
+            white_player=context.white_player,
+            black_player=context.black_player,
+            game_id=context.game_id,
+            move_number=context.move_number,
+            fen_before_blunder=context.fen_before_blunder
+        )
 
     for move in variant:
         move = board.parse_san(move)
         if move in board.legal_moves:
             board.push(move)
             if check_fork_in_position(board):
-                return True, board
+                return MissedTactic(
+                    type=TacticType.fork,
+                    fen=board.fen(),
+                    variant=variant,
+                    fen_before_blunder=context.fen_before_blunder,
+                    white_player=context.white_player,
+                    black_player=context.black_player,
+                    game_id=context.game_id,
+                    move_number=context.move_number
+                )
         else:
-            print(f"Move {move} is not legal in the current position")
+            logger.error(f"Move {move} is not legal in the current position")
             break
 
-    return False, None
+    return None
 
-def check_stalemate_in_variant(board: chess.Board, variant: list[str]) -> Tuple[bool, Union[chess.Board, None]]:
+def check_stalemate_in_variant(board: chess.Board, variant: list[str], context: BlunderContext) -> Union[MissedTactic, None]:
     '''
     Check if there is a stalemate in a variant
 
@@ -123,15 +146,24 @@ def check_stalemate_in_variant(board: chess.Board, variant: list[str]) -> Tuple[
         if move in board.legal_moves:
             board.push(move)
         else:
-            print(f"Move {move} is not legal in the current position")
+            logger.error(f"Move {move} is not legal in the current position")
             break
 
     if board.is_stalemate():
-        return True, board
+        return MissedTactic(
+            type=TacticType.stalemate,
+            fen=board.fen(),
+            variant=variant,
+            fen_before_blunder=context.fen_before_blunder,
+            white_player=context.white_player,
+            black_player=context.black_player,
+            game_id=context.game_id,
+            move_number=context.move_number
+        )
 
-    return False, None
+    return None
 
-def check_checkmate_in_variant(board: chess.Board,  variant: list[str]) -> Tuple[bool, Union[chess.Board, None]]:
+def check_checkmate_in_variant(board: chess.Board,  variant: list[str], context: BlunderContext) -> Union[MissedTactic, None]:
     '''
     Check if there is a mate in a variant
 
@@ -147,8 +179,17 @@ def check_checkmate_in_variant(board: chess.Board,  variant: list[str]) -> Tuple
         if move in board.legal_moves:
             board.push(move)
         else:
-            print(f"Move {move} is not legal in the current position")
+            logger.error(f"Move {move} is not legal in the current position")
             break
     if board.is_checkmate():
-        return True, board
-    return False, None
+        return MissedTactic(
+            type=TacticType.checkmate,
+            fen=board.fen(),
+            variant=variant,
+            fen_before_blunder=context.fen_before_blunder,
+            white_player=context.white_player,
+            black_player=context.black_player,
+            game_id=context.game_id,
+            move_number=context.move_number
+        )
+    return None

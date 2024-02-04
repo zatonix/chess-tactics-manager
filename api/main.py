@@ -1,65 +1,79 @@
+import logging
+
 from fastapi import FastAPI
+from services.chess_analysis.types import BlunderContext, MissedTactic
+from services.chess_analysis import (check_checkmate_in_variant,
+                                     check_fork_in_variant,
+                                     check_stalemate_in_variant,
+                                     get_board_after_moves, load_from_pgn)
 
-from services.chess_analysis import (check_checkmate_in_variant, check_fork_in_variant,
-                            check_stalemate_in_variant, get_board_after_moves,
-                            load_from_pgn)
-from services.lichess import LichessClient
+from api_client_initializer import lichess_client
 
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
 
-lichess_client = LichessClient()
-
-@app.get("/{username}")
-def get_analysis(username: str) -> None:
+@app.get("/missed_tactics/{username}")
+def get_analysis(username: str) -> list[MissedTactic]:
     '''
     Get analysis for a user's games
 
     Args:
-        username (str): The username to get the games from
+        username (str): The Lichess username
     '''
-    print('Loading games from lichess...')
+    logger.info('Loading games from lichess...')
     games = lichess_client.games.get_from_username(username=username, limit=100, analysed=True)
 
-    print(f'Loaded {len(games)} games')
+    logger.info(f'Loaded {len(games)} games')
 
+    response: list[MissedTactic] = []
     for game_index, game in enumerate(games, 1):
-        print(f'Game n°{game_index}')
+        logger.debug(f'Game n°{game_index}')
 
         game_details = lichess_client.games.get_from_id(game.gid)
 
-        if game_details.analysis is None:
-            print(f"No analysis for game {game.gid}")
-            continue
-
-        if game.pgn is None:
-            print(f"No pgn for game {game.gid}")
+        if game.pgn is None or game_details.analysis is None:
+            logger.error(f"Game {game.gid} has no pgn or analysis")
             continue
 
         board = load_from_pgn(game.pgn)
         if board is None:
-            print(f"Error loading board from pgn: {game.pgn}")
+            logger.error(f"Error loading board from pgn: {game.pgn}")
             continue
 
         for index, move in enumerate(game_details.analysis):
+            if (index % 2 == 0) and game.white_player.name != username or \
+               (index % 2 == 1) and game.black_player.name != username:
+                continue
+
             if move.judgment is not None and move.variation is not None:
                 variant_moves = move.variation.split()
 
                 moves_before_blunder = game.moves.split()[:index]
                 game_before_blunder = get_board_after_moves(board, moves_before_blunder)
 
-                has_fork, fork_position = check_fork_in_variant(game_before_blunder.copy(), variant_moves)
-                if has_fork and fork_position is not None:
-                    print(f"Fork found in position: \n{fork_position}")
-                    print(fork_position.fen())
+                context = BlunderContext(
+                    move_number=index + 1,
+                    white_player=game.white_player.name,
+                    black_player=game.black_player.name,
+                    fen_before_blunder=game_before_blunder.fen(),
+                    game_id=game.gid
+                )
 
-                has_stalemate, stalemate_position = check_stalemate_in_variant(game_before_blunder.copy(), variant_moves)
-                if has_stalemate and stalemate_position is not None:
-                    print(f"Stalemate found in position: \n{stalemate_position}")
-                    print(stalemate_position.fen())
+                missed_fork = check_fork_in_variant(game_before_blunder.copy(), variant_moves, context)
+                if missed_fork is not None:
+                    logger.info(missed_fork.fen)
+                    response.append(missed_fork)
 
-                has_checkmate, checkmate_position = check_checkmate_in_variant(game_before_blunder.copy(), variant_moves)
-                if has_checkmate and checkmate_position is not None:
-                    print(f"Checkmate found in position: \n{checkmate_position}")
-                    print(checkmate_position.fen())
+                missed_checkmate = check_checkmate_in_variant(game_before_blunder.copy(), variant_moves, context)
+                if missed_checkmate is not None:
+                    logger.info(missed_checkmate.fen)
+                    response.append(missed_checkmate)
+
+                missed_stalemate = check_stalemate_in_variant(game_before_blunder.copy(), variant_moves, context)
+                if missed_stalemate is not None:
+                    logger.info(missed_stalemate.fen)
+                    response.append(missed_stalemate)
+
+    return response
