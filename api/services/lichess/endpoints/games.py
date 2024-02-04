@@ -3,7 +3,7 @@ from typing import Optional
 
 import ndjson
 
-from lichess.client import Client
+from services.lichess.client import Client
 
 
 @dataclass

@@ -1,0 +1,11 @@
+version: '3'
+
+# Define services
+services:
+
+  chess_analysis_test:
+    image: chess-tactics-analysis:latest
+    container_name: chess-tactics-analysis_test
+    command: bash -c "sleep 10 && pytest tests/"
+    volumes:
+      - ./:/app

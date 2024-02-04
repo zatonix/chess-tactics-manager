@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  chess-tactics-analysis:
+    image: chess-tactics-analysis:latest
+    container_name: chess-tactics-analysis
+    command: uvicorn main:app --host 0.0.0.0 --port 3000 --reload --log-level debug
+    ports:
+      - "3000:3000"
+    volumes:
+      - ${APP:-.}:/app
+
