@@ -3,7 +3,7 @@ name: Launch tests application
 on:
   pull_request:
     paths:
-      - 'api/**'
+      - 'chess-analysis-api/**'
 
 jobs:
   tests:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./api
+        working-directory: ./chess-analysis-api
 
     strategy:
       matrix:

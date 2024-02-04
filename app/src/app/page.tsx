@@ -40,6 +40,7 @@ export default function Home() {
     setMissedTactics([])
     const response = await fetch(`http://localhost:5555/missed_tactics/${name}`)
     const data = await response.json() as MissedTactic[]
+    console.log(data)
     setMissedTactics(data)
     setIsLoading(false)
   }
