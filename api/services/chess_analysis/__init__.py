@@ -99,7 +99,7 @@ def check_fork_in_variant(board: chess.Board, variant: list[str], context: Blund
     '''
     if check_fork_in_position(board):
         return MissedTactic(
-            type=TacticType.fork,
+            type=TacticType.FORK,
             fen=board.fen(),
             variant=variant,
             white_player=context.white_player,
@@ -115,7 +115,7 @@ def check_fork_in_variant(board: chess.Board, variant: list[str], context: Blund
             board.push(move)
             if check_fork_in_position(board):
                 return MissedTactic(
-                    type=TacticType.fork,
+                    type=TacticType.FORK,
                     fen=board.fen(),
                     variant=variant,
                     fen_before_blunder=context.fen_before_blunder,
@@ -151,7 +151,7 @@ def check_stalemate_in_variant(board: chess.Board, variant: list[str], context: 
 
     if board.is_stalemate():
         return MissedTactic(
-            type=TacticType.stalemate,
+            type=TacticType.STALEMATE,
             fen=board.fen(),
             variant=variant,
             fen_before_blunder=context.fen_before_blunder,
@@ -183,7 +183,7 @@ def check_checkmate_in_variant(board: chess.Board,  variant: list[str], context:
             break
     if board.is_checkmate():
         return MissedTactic(
-            type=TacticType.checkmate,
+            type=TacticType.CHECKMATE,
             fen=board.fen(),
             variant=variant,
             fen_before_blunder=context.fen_before_blunder,

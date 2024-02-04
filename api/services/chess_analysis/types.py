@@ -3,9 +3,9 @@ from enum import Enum
 from pydantic import BaseModel
 
 class TacticType(str, Enum):
-    fork = 'fork'
-    stalemate = 'stalemate'
-    checkmate = 'checkmate'
+    FORK = 'fork'
+    STALEMATE = 'stalemate'
+    CHECKMATE = 'checkmate'
 
 class MissedTactic(BaseModel):
     type: TacticType
