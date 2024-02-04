@@ -4,8 +4,8 @@ services:
   chess-tactics-analysis:
     image: chess-tactics-analysis:latest
     container_name: chess-tactics-analysis
-    command: uvicorn main:app --host 0.0.0.0 --port 3000 --reload --log-config=logging.yaml
+    command: uvicorn main:app --host 0.0.0.0 --port 5555 --reload --log-config=logging.yaml
     ports:
-      - "3000:3000"
+      - "5555:5555"
     volumes:
       - ${APP:-.}:/app
