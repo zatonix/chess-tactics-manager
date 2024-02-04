@@ -1,5 +1,5 @@
 import pytest
-from src.chess_analysis import load_from_pgn, get_board_after_moves, check_fork_in_variant, check_checkmate_in_variant
+from services.chess_analysis import load_from_pgn, get_board_after_moves, check_fork_in_variant, check_checkmate_in_variant
 from .const import SIMPLE_PGN, FORK_PGN, CHECKMATE_PGN
 
 class TestAnalysis:

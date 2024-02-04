@@ -20,21 +20,33 @@ This is a chess tactics trainer. It is a software for lichess game analysis and 
 ### Dependencies
 
 * Python >= 3.9
+* docker
+* docker-compose
 
 ### Installing
 
 ```bash
-pip install -r requirements.txt -r requirements-dev.txt
+cd api/
+make init
 ```
 
-### Running analysis
+### Running API
 
 ```bash
-python src/main.py
+cd api/
+make run
 ```
 
 ### Launch tests
 
 ```bash
-pytest tests/
+cd api/
+make test
+```
+
+### Linter check
+
+```bash
+cd api/
+make lint
 ```
