@@ -1,9 +1,10 @@
 import logging
+from typing import Union
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from services.chess_analysis.types import BlunderContext, MissedTactic
+from services.chess_analysis.types import BlunderContext, MissedFork, MissedTactic
 from services.chess_analysis import (check_checkmate_in_variant,
                                      check_fork_in_variant,
                                      check_stalemate_in_variant,
@@ -30,7 +31,7 @@ app.add_middleware(
 
 
 @app.get("/missed_tactics/{username}")
-def get_analysis(username: str) -> list[MissedTactic]:
+def get_analysis(username: str) -> list[Union[MissedTactic, MissedFork]]:
     '''
     Get analysis for a user's games
 
@@ -42,7 +43,7 @@ def get_analysis(username: str) -> list[MissedTactic]:
 
     logger.info(f'Loaded {len(games)} games')
 
-    response: list[MissedTactic] = []
+    response: list[Union[MissedTactic, MissedFork]] = []
     for game_index, game in enumerate(games, 1):
         logger.debug(f'Game n°{game_index}')
 
@@ -69,10 +70,11 @@ def get_analysis(username: str) -> list[MissedTactic]:
                 game_before_blunder = get_board_after_moves(board, moves_before_blunder)
 
                 context = BlunderContext(
-                    move_number=index + 1,
                     white_player=game.white_player.name,
                     black_player=game.black_player.name,
                     fen_before_blunder=game_before_blunder.fen(),
+                    wrong_move=game.moves.split()[index],
+                    is_white=(game.white_player.name == username),
                     game_id=game.gid
                 )
 

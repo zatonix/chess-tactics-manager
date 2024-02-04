@@ -15,11 +15,15 @@
 
 This is a chess tactics trainer. It is a software for lichess game analysis and tactics training.
 
+<img src="images/example.png" width="520" height="680" />
+
+
 ## Getting Started
 
 ### Dependencies
 
 * Python >= 3.9
+* node >= 18
 * docker
 * docker-compose
 
@@ -27,26 +31,27 @@ This is a chess tactics trainer. It is a software for lichess game analysis and 
 
 ```bash
 cd api/
-make init
+make init # to build api docker image
+
+cd ../app
+npm install # to install app dependencies
 ```
 
-### Running API
+### How to Backend
 
 ```bash
 cd api/
-make run
+make run # to launch api
+make test # to launch tests
+make lint # to check linter
 ```
 
-### Launch tests
+### How to Frontend
 
 ```bash
-cd api/
-make test
-```
-
-### Linter check
-
-```bash
-cd api/
-make lint
+cd app/
+npm run dev # to launch app
+npm run build # to build app
+npm run test # to launch tests
+npm run lint # to check linter
 ```

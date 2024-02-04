@@ -2,25 +2,54 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { ChessVariant } from "@/components/chess/chess_variant";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Separator } from "@/components/ui/separator"
+import { useMemo, useState } from "react";
+import { Arrow } from "react-chessboard/dist/chessboard/types";
+
+
+interface BlunderContext {
+  white_player: string
+  black_player: string
+  fen_before_blunder: string
+  wrong_move: string
+}
+
+interface MissedTactic {
+  type: 'fork' | 'checkmate' | 'stalemate'
+  game_id: string
+  context: BlunderContext
+  fen: string
+  move_number: number
+  variant: string[]
+  attacked: string[]
+  attacker: string
+}
 
 export default function Home() {
 
   const [username, setUsername] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const [missedTactics, setMissedTactics] = useState([])
+  const [missedTactics, setMissedTactics] = useState<MissedTactic[]>([])
+  const [filter, setFilter] = useState("all")
 
   const fetchMissedTactics = async (name: string) => {
     setIsLoading(true)
     setMissedTactics([])
     const response = await fetch(`http://localhost:5555/missed_tactics/${name}`)
-    const data = await response.json()
+    const data = await response.json() as MissedTactic[]
     setMissedTactics(data)
     setIsLoading(false)
   }
-  console.log(missedTactics)
+
+  const filterTactics = useMemo(() => {
+    return missedTactics.filter((tactic) => tactic.type === filter || filter === 'all')
+  }, [missedTactics, filter])
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center space-y-5 p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-center font-mono text-sm lg:flex">
         <p className="flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
           <Input className="w-240" placeholder="Lichess username" value={username} onChange={(value) => setUsername(value.currentTarget.value)}/>
@@ -36,12 +65,42 @@ export default function Home() {
         </div>}
         {missedTactics.length > 0 && <div className="mt-8">
            <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-            Find {missedTactics.length} missed tactics
+            Find {filterTactics.length} missed tactics
           </h2>
+
+          <RadioGroup value={filter} className="grid-flow-col mt-4 mb-8" orientation="horizontal" onValueChange={(value) => setFilter(value)}>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="all" id="all" />
+              <Label htmlFor="all">All</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="fork" id="fork" />
+              <Label htmlFor="fork">Fork</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="checkmate" id="checkmate" />
+              <Label htmlFor="checkmate">Checkmate</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="stalemate" id="stalemate" />
+              <Label htmlFor="stalemate">Stalemate</Label>
+            </div>
+          </RadioGroup>
+
           <ul>
-            {missedTactics.map((tactic) => <li key={tactic.fen}>
-            {`${tactic.white_player} vs ${tactic.black_player} : ${tactic.fen}`}
-            </li>)}
+            {filterTactics.map((tactic) => {
+            const moveCount = Math.ceil(tactic.variant.length / 2)
+            const customArrows = tactic.attacked?.map((attacked) => [tactic.attacker, attacked, 'orange']) as (Arrow[] | undefined)
+            return (<li key={tactic.fen} className='mb-5'>
+              <a href={`https://lichess.org/${tactic.game_id}`} target="_blank" rel="noreferrer noopener" className="text-blue-600 underline">
+                {tactic.context.white_player} vs {tactic.context.black_player}
+               </a>
+               {` -> ${tactic.type}`}
+               {tactic.type === 'checkmate' && ` in ${moveCount} move${moveCount > 1 ? 's' : ''}`}
+               <ChessVariant initialPosition={tactic.context.fen_before_blunder} variant={tactic.variant} wrongMove={tactic.context.wrong_move} tacticIndex={tactic.move_number} customArrows={customArrows}/>
+                <Separator orientation="horizontal" className="mb-4 mt-4"/>
+            </li>)
+          })}
           </ul>
         </div>}
 
