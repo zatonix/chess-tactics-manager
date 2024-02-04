@@ -6,6 +6,7 @@ from typing import Union
 from lichess.client import Client
 from lichess.endpoints.games import GamesEndpoint
 
+
 class LichessClient:
 
     def __init__(self, token: Union[str, None] = None):

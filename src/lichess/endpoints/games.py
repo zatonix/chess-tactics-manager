@@ -1,9 +1,10 @@
-import ndjson
-
 from dataclasses import dataclass
 from typing import Optional
 
-from ..client import Client
+import ndjson
+
+from lichess.client import Client
+
 
 @dataclass
 class Opening:
@@ -15,7 +16,7 @@ class Opening:
 class Clock:
     initial: int
     increment: int
-    totalTime: int
+    total_time: int
 
 @dataclass
 class Division:
@@ -34,9 +35,9 @@ class PlayerAnalysis:
 class Player:
     color: str
     name: str
-    id: str
+    user_id: str
     rating: int
-    ratingDiff: int
+    rating_diff: int
     analysis: Optional[PlayerAnalysis]
 
 @dataclass
@@ -54,18 +55,18 @@ class MoveAnalysis:
 
 @dataclass
 class Game:
-    id: str
+    gid: str
     rated: bool
     variant: str
     speed: str
     perf: str
     source: str
-    createdAt: int
-    lastMoveAt: int
+    created_at: int
+    last_move_at: int
     moves: str
     status: str
-    whitePlayer: Player
-    blackPlayer: Player
+    white_player: Player
+    black_player: Player
     clock: Clock
     winner: Optional[str]
     clocks: Optional[list[int]]
@@ -115,22 +116,22 @@ class GamesEndpoint:
             pgn = game.get('pgn')
 
             games.append(Game(
-                id=game['id'],
+                gid=game['id'],
                 rated=game['rated'],
                 variant=game['variant'],
                 speed=game['speed'],
                 perf=game['perf'],
                 source=game['source'],
-                createdAt=game['createdAt'],
-                lastMoveAt=game['lastMoveAt'],
+                created_at=game['createdAt'],
+                last_move_at=game['lastMoveAt'],
                 moves=game['moves'],
                 status=game['status'],
-                whitePlayer=Player(
+                white_player=Player(
                     color='white',
                     name=white_player['user']['name'],
-                    id=white_player['user']['id'],
+                    user_id=white_player['user']['id'],
                     rating=white_player['rating'],
-                    ratingDiff=white_player['ratingDiff'],
+                    rating_diff=white_player['ratingDiff'],
                     analysis=PlayerAnalysis(
                         inaccuracy=white_player['analysis']['inaccuracy'],
                         mistake=white_player['analysis']['mistake'],
@@ -139,12 +140,12 @@ class GamesEndpoint:
                         accuracy=white_player['analysis'].get('accuracy')
                     ) if white_player.get('analysis') else None
                 ),
-                blackPlayer=Player(
+                black_player=Player(
                     color='black',
                     name=black_player['user']['name'],
-                    id=black_player['user']['id'],
+                    user_id=black_player['user']['id'],
                     rating=black_player['rating'],
-                    ratingDiff=black_player['ratingDiff'],
+                    rating_diff=black_player['ratingDiff'],
                     analysis=PlayerAnalysis(
                         inaccuracy=black_player['analysis']['inaccuracy'],
                         mistake=black_player['analysis']['mistake'],
@@ -158,7 +159,7 @@ class GamesEndpoint:
                 clock=Clock(
                     initial=game['clock']['initial'],
                     increment=game['clock']['increment'],
-                    totalTime=game['clock']['totalTime']
+                    total_time=game['clock']['totalTime']
                 ),
                 division=Division(
                     middle=game['division'].get('middle'),
@@ -193,22 +194,22 @@ class GamesEndpoint:
         response = self._client.request('GET', f'game/export/{game_id}', headers=headers).json()
 
         game = Game(
-            id=response['id'],
+            gid=response['id'],
             rated=response['rated'],
             variant=response['variant'],
             speed=response['speed'],
             perf=response['perf'],
             source=response['source'],
-            createdAt=response['createdAt'],
-            lastMoveAt=response['lastMoveAt'],
+            created_at=response['createdAt'],
+            last_move_at=response['lastMoveAt'],
             moves=response['moves'],
             status=response['status'],
-            whitePlayer=Player(
+            white_player=Player(
                 color='white',
                 name=response['players']['white']['user']['name'],
-                id=response['players']['white']['user']['id'],
+                user_id=response['players']['white']['user']['id'],
                 rating=response['players']['white']['rating'],
-                ratingDiff=response['players']['white']['ratingDiff'],
+                rating_diff=response['players']['white']['ratingDiff'],
                 analysis=PlayerAnalysis(
                     inaccuracy=response['players']['white']['analysis']['inaccuracy'],
                     mistake=response['players']['white']['analysis']['mistake'],
@@ -217,12 +218,12 @@ class GamesEndpoint:
                     accuracy=response['players']['white']['analysis'].get('accuracy')
                 ) if response['players']['white'].get('analysis') else None
             ),
-            blackPlayer=Player(
+            black_player=Player(
                 color='black',
                 name=response['players']['black']['user']['name'],
-                id=response['players']['black']['user']['id'],
+                user_id=response['players']['black']['user']['id'],
                 rating=response['players']['black']['rating'],
-                ratingDiff=response['players']['black']['ratingDiff'],
+                rating_diff=response['players']['black']['ratingDiff'],
                 analysis=PlayerAnalysis(
                     inaccuracy=response['players']['black']['analysis']['inaccuracy'],
                     mistake=response['players']['black']['analysis']['mistake'],
@@ -236,7 +237,7 @@ class GamesEndpoint:
             clock=Clock(
                 initial=response['clock']['initial'],
                 increment=response['clock']['increment'],
-                totalTime=response['clock']['totalTime']
+                total_time=response['clock']['totalTime']
             ),
             division=Division(
                 middle=response['division']['middle'],

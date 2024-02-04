@@ -1,8 +1,7 @@
-from lichess_client import APIClient
-
+from chess_analysis import (check_checkmate_in_variant, check_fork_in_variant,
+                            check_stalemate_in_variant, get_board_after_moves,
+                            load_from_pgn)
 from lichess import LichessClient
-from chess_analysis import load_from_pgn, get_board_after_moves, check_fork_in_variant, check_stalemate_in_variant, check_checkmate_in_variant
-
 
 lichess_client = LichessClient()
 
@@ -15,14 +14,14 @@ print(f'Loaded {len(games)} games')
 for game_index, game in enumerate(games, 1):
     print(f'Game n°{game_index}')
 
-    game_details = lichess_client.games.get_from_id(game.id)
+    game_details = lichess_client.games.get_from_id(game.gid)
 
     if game_details.analysis is None:
-        print(f"No analysis for game {game.id}")
+        print(f"No analysis for game {game.gid}")
         continue
 
     if game.pgn is None:
-        print(f"No pgn for game {game.id}")
+        print(f"No pgn for game {game.gid}")
         continue
 
     board = load_from_pgn(game.pgn)
