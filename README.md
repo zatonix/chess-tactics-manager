@@ -15,7 +15,7 @@
 
 This is a chess tactics trainer. It is a software for lichess game analysis and tactics training.
 
-<img src="images/example.png" width="520" height="680" />
+<img src="images/example.png" width="500" height="670" />
 
 
 ## Getting Started
@@ -30,7 +30,7 @@ This is a chess tactics trainer. It is a software for lichess game analysis and 
 ### Installing
 
 ```bash
-cd api/
+cd chess-analysis-api/
 make init # to build api docker image
 
 cd ../app
@@ -40,7 +40,7 @@ npm install # to install app dependencies
 ### How to Backend
 
 ```bash
-cd api/
+cd chess-analysis-api/
 make run # to launch api
 make test # to launch tests
 make lint # to check linter
