@@ -390,13 +390,6 @@ known-third-party=enchant
 preferred-modules=
 
 
-[EXCEPTIONS]
-
-# Exceptions that will emit a warning when caught.
-overgeneral-exceptions=BaseException,
-                       Exception
-
-
 [REFACTORING]
 
 # Maximum number of nested blocks for function / method body
