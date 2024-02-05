@@ -58,9 +58,10 @@ def get_analysis(username: str) -> list[Union[MissedTactic, MissedFork]]:
             logger.error(f"Error loading board from pgn: {game.pgn}")
             continue
 
+        is_white = game.white_player.name.lower() == username.lower()
+
         for index, move in enumerate(game_details.analysis):
-            if (index % 2 == 0) and game.white_player.name != username or \
-               (index % 2 == 1) and game.black_player.name != username:
+            if (index % 2 == (1 if is_white else 0)):
                 continue
 
             if move.judgment is not None and move.variation is not None:
@@ -74,7 +75,7 @@ def get_analysis(username: str) -> list[Union[MissedTactic, MissedFork]]:
                     black_player=game.black_player.name,
                     fen_before_blunder=game_before_blunder.fen(),
                     wrong_move=game.moves.split()[index],
-                    is_white=(game.white_player.name == username),
+                    is_white=is_white,
                     game_id=game.gid
                 )
 

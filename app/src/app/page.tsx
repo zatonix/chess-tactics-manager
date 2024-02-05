@@ -14,12 +14,12 @@ interface BlunderContext {
   white_player: string
   black_player: string
   fen_before_blunder: string
+  game_id: string
   wrong_move: string
 }
 
 interface MissedTactic {
   type: 'fork' | 'checkmate' | 'stalemate'
-  game_id: string
   context: BlunderContext
   fen: string
   move_number: number
@@ -93,7 +93,7 @@ export default function Home() {
             const moveCount = Math.ceil(tactic.variant.length / 2)
             const customArrows = tactic.attacked?.map((attacked) => [tactic.attacker, attacked, 'orange']) as (Arrow[] | undefined)
             return (<li key={tactic.fen} className='mb-5'>
-              <a href={`https://lichess.org/${tactic.game_id}`} target="_blank" rel="noreferrer noopener" className="text-blue-600 underline">
+              <a href={`https://lichess.org/${tactic.context.game_id}`} target="_blank" rel="noreferrer noopener" className="text-blue-600 underline">
                 {tactic.context.white_player} vs {tactic.context.black_player}
                </a>
                {` -> ${tactic.type}`}
