@@ -19,6 +19,7 @@ app = FastAPI()
 origins = [
     "http://localhost",
     "http://localhost:3000",
+    "https://chess-tactics-trainer.vercel.app/"
 ]
 
 app.add_middleware(
@@ -39,7 +40,7 @@ def get_analysis(username: str) -> list[Union[MissedTactic, MissedFork]]:
         username (str): The Lichess username
     '''
     logger.info('Loading games from lichess...')
-    games = lichess_client.games.get_from_username(username=username, limit=50, analysed=True)
+    games = lichess_client.games.get_from_username(username=username, limit=25, analysed=True)
 
     logger.info(f'Loaded {len(games)} games')
 
