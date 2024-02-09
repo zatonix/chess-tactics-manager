@@ -38,7 +38,7 @@ export default function Home() {
   const fetchMissedTactics = async (name: string) => {
     setIsLoading(true)
     setMissedTactics([])
-    const response = await fetch(`http://localhost:5555/missed_tactics/${name}`)
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CHESS_ANALYSIS_URL}/missed_tactics/${name}`)
     const data = await response.json() as MissedTactic[]
     console.log(data)
     setMissedTactics(data)

@@ -39,7 +39,7 @@ def get_analysis(username: str) -> list[Union[MissedTactic, MissedFork]]:
         username (str): The Lichess username
     '''
     logger.info('Loading games from lichess...')
-    games = lichess_client.games.get_from_username(username=username, limit=100, analysed=True)
+    games = lichess_client.games.get_from_username(username=username, limit=50, analysed=True)
 
     logger.info(f'Loaded {len(games)} games')
 
