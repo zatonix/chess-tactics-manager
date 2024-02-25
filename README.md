@@ -1,4 +1,4 @@
-# Chess tactics trainer
+# Chess Tactics Manager
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/zatonix/chess-tactics-trainer/graphs/commit-activity)
 ![Maintainer](https://img.shields.io/badge/maintainer-zatonix-blue)
@@ -13,40 +13,26 @@
 
 ## Description
 
-This is a chess tactics trainer. It is a software for lichess game analysis and tactics training.
+This is a chess tactics manager. It is a software for lichess game analysis and tactics training.
 
-<img src="images/example.png" width="500" height="670" />
+<img src="documentation/example.png" width="500" height="670" />
 
 
 ## Getting Started
 
 ### Dependencies
 
-* Python >= 3.9
 * node >= 18
-* docker
-* docker-compose
+
 
 ### Installing
 
 ```bash
-cd chess-analysis-api/
-make init # to build api docker image
-
 cd ../app
 npm install # to install app dependencies
 ```
 
-### How to Backend
-
-```bash
-cd chess-analysis-api/
-make run # to launch api
-make test # to launch tests
-make lint # to check linter
-```
-
-### How to Frontend
+### How to
 
 ```bash
 cd app/
