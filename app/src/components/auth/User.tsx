@@ -1,6 +1,9 @@
 import React from 'react'
 import { Session } from 'next-auth'
 import { LogoutButton } from './LogoutButton'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
+import { cn } from '@/lib/utils'
 
 interface UserProps {
     session: Session
@@ -11,19 +14,20 @@ export const User = ({ session }: UserProps) => {
         return <p> No User </p>
     }
     return (
-        <div className="card w-96 bg-primary text-primary-content">
-            <div className="card-body">
-                <div className="avatar">
-                    <div className="w-24 rounded-xl">
-                        <img src={session.user.image ?? ''} />
-                    </div>
-                </div>
-                <h2 className="card-title">{session.user.name}</h2>
-                <p>{session.user.email}</p>
-                <div className="card-actions justify-end">
-                    <LogoutButton />
-                </div>
-            </div>
-        </div>
+        <Card className={cn("text-white bg-foreground border-foreground border-l-4 border-r-0 border-t-0 border-b-0 border-primary rounded-none w-[380px]")}>
+            <CardHeader>
+                <Avatar>
+                    <AvatarImage src={session.user.image ?? ''} alt="user-avatar" />
+                    <AvatarFallback>Avatar</AvatarFallback>
+                </Avatar>
+                <CardTitle>
+                    {session.user.name}
+                </CardTitle>
+                <CardDescription>{session.user.email}.</CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-4">
+                <LogoutButton />
+            </CardContent>
+        </Card>
     )
 }

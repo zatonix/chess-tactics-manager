@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { signIn } from "next-auth/react";
+import { Button } from '@/components/ui/button'
 
 export const LoginButton = () => {
 
@@ -10,8 +11,8 @@ export const LoginButton = () => {
     }
 
     return (
-        <button className="btn btn-secondary" onClick={handleSignin}>
+        <Button className="btn btn-secondary" onClick={handleSignin}>
             Login
-        </button>
+        </Button>
     )
 }

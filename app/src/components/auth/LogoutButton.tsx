@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { signOut } from "next-auth/react";
+import { Button } from '@/components/ui/button'
 
 export const LogoutButton = () => {
 
@@ -10,8 +11,8 @@ export const LogoutButton = () => {
     }
 
     return (
-        <button className="btn btn-secondary" onClick={handleSignout}>
+        <Button className="btn btn-secondary" onClick={handleSignout}>
             Logout
-        </button>
+        </Button>
     )
 }
