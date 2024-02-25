@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss"
-const { fontFamily } = require("tailwindcss/defaultTheme")
 
 const config = {
   darkMode: ["class"],
@@ -19,20 +18,16 @@ const config = {
       },
     },
     extend: {
-      fontFamily: {
-        sans: ["lato", ...fontFamily.sans],
-        body: ["lato", ...fontFamily.sans],
-        display: ["lato", ...fontFamily.sans],
-      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "#261F27",
-        foreground: "#2E252A",
-        active: "#DC8E08",
-        primary: '#AD6205',
-        white: '#F6DED2',
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
