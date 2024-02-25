@@ -7,7 +7,7 @@ import { LoginButton } from "@/components/auth/LoginButton";
 export default async function Home() {
   const session = await getServerSession(nextAuthConfig)
   if (!session) {
-    return redirect('/api/auth/signin')
+    return redirect('/signin')
   }
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
