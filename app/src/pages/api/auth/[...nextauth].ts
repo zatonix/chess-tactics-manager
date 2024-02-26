@@ -15,7 +15,7 @@ export const nextAuthConfig = {
   ],
   adapter: PrismaAdapter(prisma),
   pages: {
-    signIn: '/auth/signin',
+    signIn: '/signin',
   },
   secret: process.env.NEXTAUTH_SECRET,
 } satisfies NextAuthOptions

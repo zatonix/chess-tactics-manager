@@ -40,7 +40,7 @@ export default function RootLayout({
               </Button>
             </div>
             <p>
-             </p>
+            </p>
           </div>
           {children}
         </div>
