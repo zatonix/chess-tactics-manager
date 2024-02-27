@@ -14,7 +14,7 @@ export const User = ({ session }: UserProps) => {
         return <p> No User </p>
     }
     return (
-        <Card className={cn("text-white bg-foreground border-foreground border-l-4 border-r-0 border-t-0 border-b-0 border-primary rounded-none w-[380px]")}>
+        <Card className={cn("text-white bg-foreground border-l-4 border-r-0 border-t-0 border-b-0 border-primary rounded-none w-[380px]")}>
             <CardHeader>
                 <Avatar>
                     <AvatarImage src={session.user.image ?? ''} alt="user-avatar" />
