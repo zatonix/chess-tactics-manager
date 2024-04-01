@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
 import React from 'react'
-import { signIn } from "next-auth/react";
+import { signIn } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 
 export const LoginButton = () => {
@@ -11,7 +11,7 @@ export const LoginButton = () => {
     }
 
     return (
-        <Button className="btn btn-secondary" onClick={handleSignin}>
+        <Button className='btn btn-secondary' onClick={handleSignin}>
             Login
         </Button>
     )

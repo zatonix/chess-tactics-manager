@@ -1,3 +1,133 @@
 {
-  "extends": "next/core-web-vitals"
+    "extends": [
+        "next/core-web-vitals",
+        "eslint:recommended"
+    ],
+    "rules": {
+        "prettier/prettier": [
+            "off",
+            {},
+            {
+                "usePrettierrc": false
+            }
+        ],
+        "semi": [
+            "error",
+            "never"
+        ],
+        "key-spacing": "error",
+        "jsx-quotes": [
+            "error",
+            "prefer-single"
+        ],
+        "max-len": [
+            "error",
+            120,
+            2
+        ],
+        "object-curly-spacing": [
+            "error",
+            "always"
+        ],
+        "comma-dangle": [
+            "error",
+            "only-multiline"
+        ],
+        "no-var": "error",
+        "eqeqeq": [
+            "error",
+            "smart"
+        ],
+        "vars-on-top": "error",
+        "no-self-compare": "error",
+        "use-isnan": "error",
+        "no-extra-semi": "error",
+        "quotes": [
+            "error",
+            "single",
+            {
+                "allowTemplateLiterals": true
+            }
+        ],
+        "space-infix-ops": [
+            "error",
+            {
+                "int32Hint": false
+            }
+        ],
+        "react/jsx-filename-extension": [
+            1,
+            {
+                "extensions": [
+                    ".tsx"
+                ]
+            }
+        ],
+        "no-plusplus": "error",
+        "prefer-const": "error",
+        "radix": "error",
+        "react/jsx-one-expression-per-line": "error",
+        "camelcase": "off",
+        "jsx-a11y/no-noninteractive-element-interactions": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/no-static-element-interactions": "off",
+        "jsx-a11y/label-has-associated-control": "off",
+        "react-hooks/exhaustive-deps": "error",
+        // rules to check & update
+        "react/no-unused-state": "error",
+        "react/no-unused-prop-types": "error",
+        "react/prop-types": "off",
+        "import/extensions": "off",
+        "react/static-property-placement": "off",
+        "import/no-unresolved": "off",
+        "no-empty-function": "off",
+        "import/no-mutable-exports": "error",
+        "max-classes-per-file": "off",
+        "react/destructuring-assignment": "off",
+        "react/require-default-props": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "no-restricted-properties": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "no-param-reassign": "off",
+        "react/no-danger": "off",
+        "react/jsx-uses-react": "off",
+        "react/react-in-jsx-scope": "off",
+        "no-unused-expressions": "off",
+        "react/no-did-update-set-state": "off",
+        "react/no-access-state-in-setstate": "off",
+        "func-names": "off",
+        "import/no-named-as-default": "off",
+        "import/prefer-default-export": "off",
+        "@typescript-eslint/ban-types": "off",
+        "import/no-extraneous-dependencies": "off",
+        "no-lonely-if": "off",
+        "no-bitwise": "off",
+        "no-nested-ternary": "off",
+        "react/default-props-match-prop-types": "off",
+        "no-use-before-define": "off",
+        "react/jsx-props-no-spreading": "off",
+        "consistent-return": "off",
+        "import/no-named-as-default-member": "off",
+        "default-case": "off",
+        "prefer-destructuring": "off",
+        "react/no-unescaped-entities": "off",
+        "react/jsx-no-bind": "off",
+        "class-methods-use-this": "off",
+        "import/no-cycle": "off",
+        "react/no-array-index-key": "off",
+        "typescript-eslint/no-var-requires": "off",
+        "no-restricted-syntax": "off",
+        "no-return-await": "off",
+        "@typescript-eslint/no-empty-interface": "off",
+        "react/prefer-stateless-function": "off",
+        "@typescript-eslint/ban-ts-comment": 0,
+        "react/sort-comp": "off",
+        "no-empty": "off",
+        "import/no-duplicates": "off",
+        "@typescript-eslint/no-var-requires": "off",
+        "no-restricted-globals": "off",
+        "no-return-assign": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-non-null-asserted-optional-chain": "off"
+    }
 }
