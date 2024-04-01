@@ -18,7 +18,7 @@ export default async function SignIn() {
                     <h1 className='scroll-m-20 border-b pb-2 mb-10 text-3xl font-semibold tracking-tight first:mt-0'>
                         Reset password
                     </h1>
-                    <div className='w-1/2 text-left'>
+                    <div className='w-3/4 md:w-1/2 text-left'>
                         <ResetPasswordForm />
                     </div>
                 </div>
