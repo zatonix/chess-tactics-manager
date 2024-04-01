@@ -20,7 +20,7 @@ export default async function SignIn() {
                 <h2 className='text-2xl font-semibold mb-10'>
                     Create account
                 </h2>
-                <div className='w-1/2 text-left'>
+                <div className='w-3/4 md:w-1/2 text-left'>
                     <SignupForm />
                     <p className='text-sm text-center mt-10'>
                         Already have an account?

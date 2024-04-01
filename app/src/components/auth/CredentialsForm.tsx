@@ -49,7 +49,7 @@ export const CredentialsForm = () => {
         {isError && <div className='text-red-500 text-xs mb-5'>
             Invalid login or password
         </div>}
-        <div className='flex flex-col sm:flex-row items-end sm:justify-between gap-2 text-xs mb-6'>
+        <div className='flex flex-col sm:flex-row items-center md:items-end sm:justify-between gap-2 text-xs mb-6'>
             <div className='flex justify-center items-center gap-2'>
                 <Checkbox
                     checked={userInfos.remember}

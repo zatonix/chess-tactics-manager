@@ -26,7 +26,7 @@ export default async function SignIn() {
                     <h1 className='scroll-m-20 border-b pb-2 mb-10 text-3xl font-semibold tracking-tight first:mt-0'>
                         Chess Tactics Manager
                     </h1>
-                    <div className='w-1/2 text-left'>
+                    <div className='w-3/4 md:w-1/2 text-left'>
                         <CredentialsForm />
                         <Separator className='mt-12 mb-12' />
                         <div className='flex items-center justify-center flex-col gap-2'>

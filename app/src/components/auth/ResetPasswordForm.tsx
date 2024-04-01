@@ -7,11 +7,11 @@ import { Button } from '../ui/button'
 import { ArrowLeft, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 export const ResetPasswordForm = () => {
     const searchParams = useSearchParams()
-
+    const router = useRouter()
     const [userInfos, setUserInfos] = React.useState({ password: '', confirmPassword: '' })
     const [errorMsg, setErrorMsg] = React.useState('')
     const [isLoading, setIsLoading] = React.useState(false)
@@ -55,6 +55,7 @@ export const ResetPasswordForm = () => {
             .then(() => {
                 setIsLoading(false)
                 toast.success('Password reset successfully')
+                router.push('/signin')
             })
             .catch((error) => console.log('Error: ', error))
     }
