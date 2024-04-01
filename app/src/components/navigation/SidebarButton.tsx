@@ -1,6 +1,5 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
-import { LayoutDashboard, AreaChart, UserCog, LucideIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 
@@ -23,10 +22,10 @@ export const SidebarButton = ({
         <Button
             variant='link'
             onClick={() => router.push(baseUrl)}
-            className={cn("w-14 h-14 text-white", active ? "bg-active" : "")}
-            size="lg"
+            className={cn('w-14 h-14 text-white', active ? 'bg-active' : '')}
+            size='lg'
         >
-            <div className="flex flex-col justify-center items-center">
+            <div className='flex flex-col justify-center items-center'>
                 {icon}
                 {label}
             </div>

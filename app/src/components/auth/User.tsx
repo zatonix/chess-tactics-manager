@@ -11,21 +11,28 @@ interface UserProps {
 
 export const User = ({ session }: UserProps) => {
     if (!session.user) {
-        return <p> No User </p>
+        return (<p>
+            No User
+        </p>)
     }
     return (
-        <Card className={cn("text-white bg-foreground border-l-4 border-r-0 border-t-0 border-b-0 border-primary rounded-none w-[380px]")}>
+        <Card className={cn('text-white bg-foreground border-l-4 border-r-0',
+            'border-t-0 border-b-0 border-primary rounded-none w-[380px]')}>
             <CardHeader>
                 <Avatar>
-                    <AvatarImage src={session.user.image ?? ''} alt="user-avatar" />
-                    <AvatarFallback>Avatar</AvatarFallback>
+                    <AvatarImage src={session.user.image ?? ''} alt='user-avatar' />
+                    <AvatarFallback>
+                        Avatar
+                    </AvatarFallback>
                 </Avatar>
                 <CardTitle>
                     {session.user.name}
                 </CardTitle>
-                <CardDescription>{session.user.email}.</CardDescription>
+                <CardDescription>
+                    {session.user.email}
+                </CardDescription>
             </CardHeader>
-            <CardContent className="grid gap-4">
+            <CardContent className='grid gap-4'>
                 <LogoutButton />
             </CardContent>
         </Card>
