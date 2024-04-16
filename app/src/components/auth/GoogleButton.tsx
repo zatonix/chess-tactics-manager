@@ -9,15 +9,15 @@ export const GoogleButton = () => {
     return (
         <Button
             className={`
-                text-black border-none bg-[#ffffff] w-full font-medium rounded-none
-                text-sm px-5 py-6 text-center inline-flex items-center dark:hover:bg-[#050708]/40
-                dark:focus:ring-gray-600 me-2 mb-2
+                mb-2 me-2 inline-flex w-full items-center rounded-none
+                border-none bg-[#ffffff] px-5 py-6 text-center text-sm font-medium
+                 text-black hover:bg-[#ffffff]/80
             `}
             onClick={() => signIn('google')}
             variant='outline'
         >
             <svg
-                className='w-5 h-5 me-2 -ms-1'
+                className='-ms-1 me-2 size-5'
                 xmlns='http://www.w3.org/2000/svg'
                 viewBox='0 0 48 48'
                 width='48px'

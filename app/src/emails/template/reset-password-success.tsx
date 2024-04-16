@@ -40,22 +40,22 @@ export const ResetPasswordSuccessEmail = ({
         {previewText}
       </Preview>
       <Tailwind>
-        <Body className='bg-[#261F27] my-auto mx-auto font-sans px-2'>
-          <Container className={`border border-solid bg-[#2E252A] border-l-4 border-r-0 border-t-0 border-b-0
-            border-[#AD6205] rounded my-[40px] mx-auto p-[20px] max-w-[465px]`}>
+        <Body className='m-auto bg-[#261F27] px-2 font-sans'>
+          <Container className={`mx-auto my-[40px] max-w-[465px] rounded border border-y-0 border-l-4
+            border-r-0 border-solid border-[#AD6205] bg-[#2E252A] p-[20px]`}>
             <Section className='mt-[32px]'>
               <Img
                 src={`${baseUrl}/logo.png`}
                 width='65'
                 height='65'
                 alt='ctm-logo'
-                className='my-0 mx-auto'
+                className='mx-auto my-0'
               />
             </Section>
-            <Text className='text-white text-[14px] leading-[24px]'>
+            <Text className='text-[14px] leading-[24px] text-white'>
               Hello chess player,
             </Text>
-            <Text className='text-white text-[14px] leading-[24px]'>
+            <Text className='text-[14px] leading-[24px] text-white'>
               You updated the password for your account on
               {' '}
               {resetDate}
@@ -67,23 +67,23 @@ export const ResetPasswordSuccessEmail = ({
               <br />
               Remember to use a password that is both strong and unique to your chess tactics manager account.
             </Text>
-            <Section className='text-center mt-[32px] mb-[32px]'>
+            <Section className='my-[32px] text-center'>
               <Button
-                className='bg-[#AD6205] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3'
+                className='rounded bg-[#AD6205] px-5 py-3 text-center text-[12px] font-semibold text-white no-underline'
                 href={loginLink}
               >
                 Login to Chess Tactics Manager
               </Button>
             </Section>
-            <Text className='text-white text-[14px] leading-[24px]'>
+            <Text className='text-[14px] leading-[24px] text-white'>
               or copy and paste this URL into your browser:
               {' '}
               <Link href={loginLink} className='text-blue-600 no-underline'>
                 {loginLink}
               </Link>
             </Text>
-            <Hr className='border border-solid border-[#eaeaea] my-[26px] mx-0 w-full' />
-            <Text className='text-[#666666] text-[12px] leading-[24px]'>
+            <Hr className='mx-0 my-[26px] w-full border border-solid border-[#eaeaea]' />
+            <Text className='text-[12px] leading-[24px] text-[#666666]'>
               This invitation was intended for
               {' '}
               <span className='text-white'>

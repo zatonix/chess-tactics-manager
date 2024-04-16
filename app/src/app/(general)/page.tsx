@@ -1,18 +1,15 @@
-import { getServerSession } from 'next-auth'
-import { redirect } from 'next/navigation'
-import { nextAuthConfig } from '@/pages/api/auth/[...nextauth]'
-import { User } from '@/components/auth/User'
+import { UserDetails } from '@/app/(general)/UserDetails'
+import { checkServerSessionOrRedirect } from '@/lib/authentication'
 
-export default async function Home() {
-  const session = await getServerSession(nextAuthConfig)
-  if (!session) {
-    return redirect('/signin')
-  }
+export default async function DashboardPage() {
+  const user = await checkServerSessionOrRedirect()
 
   return (
     <main className='flex min-h-screen flex-col items-center justify-between p-24'>
-      <div className='z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex'>
-        <User session={session} />
+      <div className='w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex'>
+        <UserDetails
+          user={user!}
+        />
       </div>
     </main>
   )

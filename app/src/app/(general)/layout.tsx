@@ -7,7 +7,7 @@ export default function GeneralLayout({
     children: React.ReactNode
 }) {
     return (
-        <div className='w-full h-screen flex bg-background text-white'>
+        <div className='flex h-screen w-full bg-background text-white'>
             <Sidebar />
             {children}
         </div>

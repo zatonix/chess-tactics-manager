@@ -3,7 +3,7 @@
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import React from 'react'
-import { Button } from '../ui/button'
+import { Button } from '../../../components/ui/button'
 import { ArrowLeft, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
@@ -67,7 +67,7 @@ export const ResetPasswordForm = () => {
         </Label>
         <Input type='password' name='pasword' placeholder='Type your password' value={userInfos.password}
             onChange={(e) => setUserInfos({ ...userInfos, password: e.target.value })}
-            className='shadow-md border mt-2 w-full h-10 px-3 py-2 bg-background border-background mb-4 rounded-none'
+            className='mb-4 mt-2 h-10 w-full rounded-none border border-background bg-background px-3 py-2 shadow-md'
         />
         <Label htmlFor='confirmPassword'>
             Confirm password
@@ -75,24 +75,24 @@ export const ResetPasswordForm = () => {
         <Input type='password' name='confirmPassword'
             placeholder='Confirm your password' value={userInfos.confirmPassword}
             onChange={(e) => setUserInfos({ ...userInfos, confirmPassword: e.target.value })}
-            className='shadow-md border mt-2 w-full h-10 px-3 py-2 bg-background border-background mb-4 rounded-none'
+            className='mb-4 mt-2 h-10 w-full rounded-none border border-background bg-background px-3 py-2 shadow-md'
         />
         {errorMsg.length > 0 &&
-            <div className='text-red-500 text-xs'>
+            <div className='text-xs text-red-500'>
                 {errorMsg}
             </div>}
         <Button
-            className='btn btn-primary dark mt-4 mb-10 w-full rounded-none'
+            className='dark mb-10 mt-4 w-full rounded-none'
             onClick={submitForm}
             disabled={isLoading || !userInfos.password || !userInfos.confirmPassword}
             size='lg'
         >
             Reset your password
-            {isLoading && <Loader2 className='h-4 w-4 ml-1 animate-spin' />}
+            {isLoading && <Loader2 className='ml-1 size-4 animate-spin' />}
         </Button>
-        <p className='flex justify-center flex-row align-baseline mt-5'>
+        <p className='mt-5 flex flex-row justify-center align-baseline'>
             <ArrowLeft className='text-sm' />
-            <Link href='/signin' className='text-sm text-center ml-1 hover:underline'>
+            <Link href='/signin' className='ml-1 text-center text-sm hover:underline'>
                 Back to login
             </Link>
         </p>

@@ -7,11 +7,12 @@ export const AppleButton = () => {
     return (
         <Button
             type='button'
-            className='text-white w-full font-medium rounded-none bg-[#000000] hover:bg-[#050708]/80
-                      text-sm px-5 py-6 text-center inline-flex items-center
-                    dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600 me-2 mb-2'
+            className='mb-2 me-2 inline-flex w-full items-center rounded-none
+                      border-none bg-[#000000] px-5 py-6 text-center text-sm font-medium
+                    text-white hover:bg-[#050708]/80 dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600'
         >
-            <svg className='w-5 h-5 me-2 -ms-1'
+            <svg
+                className='-ms-1 me-2 h-6 w-5'
                 aria-hidden='true' focusable='false' data-prefix='fab' data-icon='apple' role='img'
                 xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'>
                 <path fill='currentColor'

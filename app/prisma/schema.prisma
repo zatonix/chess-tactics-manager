@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL")
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
@@ -38,21 +38,23 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  password      String?
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  verificationToken  VerificationToken?
+  id                String             @id @default(cuid())
+  name              String?
+  email             String?            @unique
+  password          String?
+  emailVerified     DateTime?
+  image             String?
+  lichessUsername   String?
+  chesscomUsername  String?
+  accounts          Account[]
+  sessions          Session[]
+  verificationToken VerificationToken?
 }
 
 model VerificationToken {
-  identifier String   @id @default(cuid())
-  userId     String   @unique
-  token      String   @unique
+  identifier String    @id @default(cuid())
+  userId     String    @unique
+  token      String    @unique
   expires    DateTime?
-  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
