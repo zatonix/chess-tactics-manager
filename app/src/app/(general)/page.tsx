@@ -10,9 +10,20 @@ import { ChessGame } from './ChessGame'
 import { CountGameChart } from './CountGameChart'
 
 export default async function DashboardPage() {
-  await checkServerSessionOrRedirect()
+  const user = await checkServerSessionOrRedirect()
+  const chessAccounts = user?.chessAccounts || []
 
   const games = await prisma.game.findMany({
+    where: {
+      OR: [
+        ...chessAccounts.map((account) => {
+          return { whiteChessAccountId: account.id }
+        }),
+        ...chessAccounts.map((account) => {
+          return { blackChessAccountId: account.id }
+        }),
+      ]
+    },
     orderBy: {
       date: 'desc'
     },

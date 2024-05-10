@@ -56,22 +56,6 @@ export default async function handler(
       return
     }
 
-    // model ChessAccount {
-    //   id        String   @id @default(cuid())
-    //   userId    String   @unique
-    //   provider  String
-    //   username  String
-    //   rating    Int?
-    //   fetchTime DateTime?
-    
-    //   gamesAsWhite Game[] @relation("WhiteChessAccount")
-    //   gamesAsBlack Game[] @relation("BlackChessAccount")
-    
-    //   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-    
-    //   @@unique([provider, username])
-    // }
-
     const user = await prisma.user.findUnique({
       where: {
         email: decodedUser.email,
