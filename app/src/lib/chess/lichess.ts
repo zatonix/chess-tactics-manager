@@ -36,7 +36,7 @@ export const updateLichessAccount = async (accountId: string) => {
   console.log('Fetching lichess games for', account.username)
 
   const response = await fetch(
-    `https://lichess.org/api/games/user/${account.username}?clocks=true&opening=true`,
+    `https://lichess.org/api/games/user/${account.username}?clocks=true&opening=true&max=100`,
     {
       headers: {
         Accept: 'application/x-ndjson'
