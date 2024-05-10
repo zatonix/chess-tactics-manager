@@ -15,6 +15,7 @@ import { triggerLichessSync } from '@/lib/chess/lichess'
 import { Button } from '@/components/ui/button'
 import { UserWithAccounts } from '@/lib/database'
 import toast from 'react-hot-toast'
+import { Loader2 } from 'lucide-react'
 
 interface UserProps {
   user: UserWithAccounts
@@ -23,6 +24,8 @@ interface UserProps {
 const MotionCard = motion(Card)
 
 export const UserDetails = ({ user }: UserProps) => {
+
+
   const lichessAccount = user.chessAccounts.find(
     (account) => account.provider === 'lichess'
   )
@@ -60,8 +63,12 @@ export const UserDetails = ({ user }: UserProps) => {
             <span className='flex flex-col'>
               <span>{`Lichess Username: ${lichessAccount.username}`}</span>
               <i>
-                Last update:{' '}
-                {lichessAccount.lastFetch?.toLocaleString() || 'never'}
+                Last update jkde:{' '}
+                {lichessAccount.isFetching ? (
+                  <Loader2 className='ml-1 size-4 animate-spin' />
+                ) : (
+                  lichessAccount.lastFetch?.toLocaleString() || 'never'
+                )}
               </i>
             </span>
           )}
