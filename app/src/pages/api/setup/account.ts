@@ -39,10 +39,14 @@ export default async function handler(
   } else if (req.method === 'PUT') {
     const sessionToken = req.cookies['next-auth.session-token']
 
+    console.log('sessionToken', sessionToken)
+    
     const decodedUser = await decode({
       token: sessionToken,
       secret: process.env.NEXTAUTH_SECRET!,
     })
+
+    console.log('decodedUser', decodedUser)
 
     if (!decodedUser || !decodedUser.email) {
       res.status(403).json({ success: false })
