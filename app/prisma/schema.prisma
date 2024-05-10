@@ -37,6 +37,15 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model VerificationToken {
+  identifier String    @id @default(cuid())
+  userId     String    @unique
+  token      String    @unique
+  expires    DateTime?
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ------------------------------------------------------------------------
 model User {
   id                String             @id @default(cuid())
   name              String?
@@ -44,17 +53,68 @@ model User {
   password          String?
   emailVerified     DateTime?
   image             String?
-  lichessUsername   String?
-  chesscomUsername  String?
   accounts          Account[]
   sessions          Session[]
   verificationToken VerificationToken?
+  chessAccounts     ChessAccount[]
 }
 
-model VerificationToken {
-  identifier String    @id @default(cuid())
+model ChessAccount {
+  id         String    @id @default(cuid())
   userId     String    @unique
-  token      String    @unique
-  expires    DateTime?
-  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider   String
+  username   String
+  isFetching Boolean  @default(false)
+  lastFetch  DateTime?
+  rating     Int?
+
+  gamesAsWhite Game[] @relation("WhiteChessAccount")
+  gamesAsBlack Game[] @relation("BlackChessAccount")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, username])
+}
+
+enum GameCategory {
+  bullet
+  blitz
+  rapid
+  classical
+}
+
+enum GameStatus {
+  mate
+  draw
+  resign
+  outoftime
+  timeout
+  stalemate
+}
+
+enum GameWinner {
+  white
+  black
+  draw
+}
+
+model Game {
+  id                  String       @id @default(cuid())
+  whiteChessAccountId String?
+  blackChessAccountId String?
+  category            GameCategory
+  rated               Boolean
+  whitePlayer         String
+  whiteRating         Int
+  blackPlayer         String
+  blackRating         Int
+  winner              GameWinner
+  status              GameStatus
+  pgn                 String
+  opening             String
+  clocks              Int[]
+  date                DateTime
+
+  whiteChessAcount ChessAccount? @relation(name: "WhiteChessAccount", fields: [whiteChessAccountId], references: [id])
+  blackChessAcount ChessAccount? @relation(name: "BlackChessAccount", fields: [blackChessAccountId], references: [id])
 }

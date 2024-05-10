@@ -19,10 +19,12 @@ export const SidebarButton = ({
     return (<Link href={baseUrl}>
         <Button
             variant='link'
-            className={cn('w-14 h-14 p-9 text-white hover:no-underline', active ? 'bg-active' : '')}
-            size='lg'
+            className={cn('size-4 p-8 text-white hover:no-underline rounded-none', {
+                'bg-primary': active
+            })}
+            size='icon'
         >
-            <div className='flex flex-col items-center justify-center text-xs'>
+            <div className='flex flex-col items-center justify-center text-xs font-light'>
                 {icon}
                 {label}
             </div>

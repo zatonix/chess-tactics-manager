@@ -1,0 +1,7 @@
+{
+  "maxlength": 120,
+  "trailingComma": "none",
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "semi": false
+}

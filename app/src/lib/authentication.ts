@@ -1,11 +1,10 @@
 import { getServerSession } from 'next-auth/next'
 import { redirect } from 'next/navigation'
 import { nextAuthConfig } from '@/pages/api/auth/[...nextauth]'
-import { User } from '@prisma/client'
-import { isNil } from 'lodash'
-import prisma from '@/lib/database'
+import { isEmpty, isNil } from 'lodash'
+import prisma, { UserWithAccounts } from '@/lib/database'
 
-export const checkServerSessionOrRedirect = async (checkSetup: boolean = true): Promise<User | undefined> => {
+export const checkServerSessionOrRedirect = async (checkSetup: boolean = true): Promise<UserWithAccounts | null> => {
     const session = await getServerSession(nextAuthConfig)
 
     if (!session || isNil(session?.user?.email)) {
@@ -15,14 +14,17 @@ export const checkServerSessionOrRedirect = async (checkSetup: boolean = true): 
     const user = await prisma.user.findUnique({
         where: {
             email: session.user.email,
-        }
+        },
+        include: {
+            chessAccounts: true
+        },
     })
 
     if (!user) {
         return redirect('/signin')
     }
 
-    if (isNil(user.lichessUsername) && isNil(user.chesscomUsername) && checkSetup) {
+    if (isEmpty(user.chessAccounts) && checkSetup) {
         return redirect('/setup')
     }
 

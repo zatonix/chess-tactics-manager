@@ -1,11 +1,12 @@
 import { checkServerSessionOrRedirect } from '@/lib/authentication'
+import { UserDetails } from './UserDetails'
 
 export default async function ProfilePage() {
-    await checkServerSessionOrRedirect()
+    const user = await checkServerSessionOrRedirect()
 
     return (
         <>
-        Profile
+        <UserDetails user={user!} />
         </>
     )
 }

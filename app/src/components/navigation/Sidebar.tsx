@@ -21,14 +21,15 @@ export const Sidebar = () => {
     }, [pathname])
 
     return (
-        <div className='w-20 min-w-20 bg-foreground shadow-lg'>
-            <div className='flex h-2/3 flex-col items-center justify-between'>
-                <Link href='/'>
-                    <Image src='/logo.png' width='310' height='310' alt='logo' className='m-4 w-12 hover:scale-110' />
+        // eslint-disable-next-line tailwindcss/no-custom-classname
+        <div className='h-18 fixed z-10 w-screen bg-foreground shadow-lg md:h-full md:w-16'>
+            <div className='flex items-center justify-around md:h-full md:flex-col md:justify-between'>
+                <Link href='/' className='hidden md:block'>
+                    <Image src='/logo.png' width='220' height='220' alt='logo' className='m-2 w-12 hover:scale-110' />
                 </Link>
-                <div className='flex flex-col items-center justify-around gap-12'>
+                <div className='flex gap-14 md:flex-col'>
                     <SidebarButton
-                        label='Dashboard' baseUrl='/' icon={<LayoutDashboard />} active={activeMenu === 'home'}
+                        label='Home' baseUrl='/' icon={<LayoutDashboard />} active={activeMenu === 'home'}
                     />
                     <SidebarButton
                         label='Stats' baseUrl='/stats' icon={<AreaChart />} active={activeMenu === 'stats'}
@@ -37,6 +38,7 @@ export const Sidebar = () => {
                         label='Profile' baseUrl='/profile' icon={<UserCog />} active={activeMenu === 'profile'}
                     />
                 </div>
+                <div className='hidden md:block'/>
             </div>
         </div>
     )

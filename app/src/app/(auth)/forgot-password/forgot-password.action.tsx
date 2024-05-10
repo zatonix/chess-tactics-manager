@@ -1,7 +1,7 @@
 'use server'
 
 import { headers } from 'next/headers'
-import ResetPasswordEmail from '@/emails/template/reset-password'
+import ResetPasswordEmail from '@/../emails/reset-password'
 import prisma from '@/lib/database'
 import { sendEmail } from '@/lib/email'
 import { nobodyAction } from '@/lib/safe-actions'

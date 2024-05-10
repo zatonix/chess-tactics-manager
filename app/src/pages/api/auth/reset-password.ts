@@ -4,8 +4,8 @@ import { render } from '@react-email/components'
 import { nanoid } from 'nanoid'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Resend } from 'resend'
-import ResetPasswordEmail from '../../../emails/template/reset-password'
-import ResetPasswordSuccessEmail from '../../../emails/template/reset-password-success'
+import ResetPasswordEmail from '@/../emails/reset-password'
+import ResetPasswordSuccessEmail from '@/../emails/reset-password-success'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 

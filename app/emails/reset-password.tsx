@@ -13,24 +13,23 @@ import {
 } from '@react-email/components'
 import { Tailwind } from '@react-email/tailwind'
 import * as React from 'react'
+import config from '../tailwind.config'
 
-interface ResetPasswordSuccessEmailProps {
+interface ResetPasswordEmailProps {
   resetEmail?: string
-  resetDate?: string
-  loginLink?: string
+  resetPasswordLink?: string
   resetFromIp?: string
   resetFromLocation?: string
 }
 
-const baseUrl = process.env.NEXT_APP_URL
+const baseUrl = process.env.NEXT_APP_URL ?? 'http://localhost:3000/static'
 
-export const ResetPasswordSuccessEmail = ({
+export const ResetPasswordEmail = ({
   resetEmail,
-  resetDate,
-  loginLink,
+  resetPasswordLink,
   resetFromIp,
   resetFromLocation,
-}: ResetPasswordSuccessEmailProps) => {
+}: ResetPasswordEmailProps) => {
   const previewText = `Reset password`
 
   return (
@@ -39,13 +38,13 @@ export const ResetPasswordSuccessEmail = ({
       <Preview>
         {previewText}
       </Preview>
-      <Tailwind>
-        <Body className='m-auto bg-[#261F27] px-2 font-sans'>
+      <Tailwind config={config}>
+        <Body className='m-auto bg-background px-2 font-sans'>
           <Container className={`mx-auto my-[40px] max-w-[465px] rounded border border-y-0 border-l-4
-            border-r-0 border-solid border-[#AD6205] bg-[#2E252A] p-[20px]`}>
+            border-r-0 border-solid border-primary bg-foreground p-[20px]`}>
             <Section className='mt-[32px]'>
               <Img
-                src={`${baseUrl}/logo.png`}
+                src={`${baseUrl}/ctm-logo.png`}
                 width='65'
                 height='65'
                 alt='ctm-logo'
@@ -56,30 +55,22 @@ export const ResetPasswordSuccessEmail = ({
               Hello chess player,
             </Text>
             <Text className='text-[14px] leading-[24px] text-white'>
-              You updated the password for your account on
-              {' '}
-              {resetDate}
-              .
-              <br />
-              If this was you, then no further action is required.
-              <br />
-              However if you did NOT perform this password change, please reset your account password immediately.
-              <br />
-              Remember to use a password that is both strong and unique to your chess tactics manager account.
+              Someone recently requested a password change for your account.
+              If this was you, you can set a new password here:
             </Text>
             <Section className='my-[32px] text-center'>
               <Button
-                className='rounded bg-[#AD6205] px-5 py-3 text-center text-[12px] font-semibold text-white no-underline'
-                href={loginLink}
+                className='rounded bg-primary px-5 py-3 text-center text-[12px] font-semibold text-white no-underline'
+                href={resetPasswordLink}
               >
-                Login to Chess Tactics Manager
+                Reset password
               </Button>
             </Section>
             <Text className='text-[14px] leading-[24px] text-white'>
               or copy and paste this URL into your browser:
               {' '}
-              <Link href={loginLink} className='text-blue-600 no-underline'>
-                {loginLink}
+              <Link href={resetPasswordLink} className='text-blue-600 no-underline'>
+                {resetPasswordLink}
               </Link>
             </Text>
             <Hr className='mx-0 my-[26px] w-full border border-solid border-[#eaeaea]' />
@@ -89,13 +80,11 @@ export const ResetPasswordSuccessEmail = ({
               <span className='text-white'>
                 {resetEmail}
               </span>
-              . This invite was sent from
+              {`. This invite was sent from `}
               <span className='text-white'>
                 {resetFromIp}
               </span>
-              {' '}
-              from
-              {' '}
+              {` on `}
               <span className='text-white'>
                 {resetFromLocation}
               </span>
@@ -108,12 +97,11 @@ export const ResetPasswordSuccessEmail = ({
   )
 }
 
-ResetPasswordSuccessEmail.PreviewProps = {
-  resetDate: 'Jun 23, 2022, 4:06:00 PM',
+ResetPasswordEmail.PreviewProps = {
   resetEmail: 'me@example.com',
-  loginLink: 'http://localhost:3000/reset-password?token=123',
+  resetPasswordLink: 'http://localhost:3000/reset-password?token=123',
   resetFromIp: 'XXX.XXX.XXX.XXX',
   resetFromLocation: 'Paris, France',
-} as ResetPasswordSuccessEmailProps
+} as ResetPasswordEmailProps
 
-export default ResetPasswordSuccessEmail
+export default ResetPasswordEmail

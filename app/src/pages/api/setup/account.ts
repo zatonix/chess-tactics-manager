@@ -51,14 +51,49 @@ export default async function handler(
 
     const { lichessUsername, chesscomUsername }  = req.body
 
-    await prisma.user.update({
-      where: { email: decodedUser.email },
-      data: {
-        lichessUsername,
-        chesscomUsername,
+    if (lichessUsername === undefined && chesscomUsername === undefined) {
+      res.status(400).json({ success: false })
+      return
+    }
+
+    // model ChessAccount {
+    //   id        String   @id @default(cuid())
+    //   userId    String   @unique
+    //   provider  String
+    //   username  String
+    //   rating    Int?
+    //   fetchTime DateTime?
+    
+    //   gamesAsWhite Game[] @relation("WhiteChessAccount")
+    //   gamesAsBlack Game[] @relation("BlackChessAccount")
+    
+    //   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    
+    //   @@unique([provider, username])
+    // }
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email: decodedUser.email,
       },
     })
 
+    if (!user) {
+      res.status(403).json({ success: false })
+      return
+    }
+    
+    if (lichessUsername !== undefined) {
+      await prisma.chessAccount.create({
+        data: {
+          provider: 'lichess',
+          username: lichessUsername,
+          userId: user.id
+        },
+      })
+      }
+
+    
     res.status(200).json({ success: true })
   } else {
     res.status(400).json({ success: false })
