@@ -63,7 +63,7 @@ export const UserDetails = ({ user }: UserProps) => {
             <span className='flex flex-col'>
               <span>{`Lichess Username: ${lichessAccount.username}`}</span>
               <i>
-                Last update jkde:{' '}
+                Last update:{' '}
                 {lichessAccount.isFetching ? (
                   <Loader2 className='ml-1 size-4 animate-spin' />
                 ) : (
