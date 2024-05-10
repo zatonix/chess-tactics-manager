@@ -61,7 +61,7 @@ export const UserDetails = ({ user }: UserProps) => {
               <span>{`Lichess Username: ${lichessAccount.username}`}</span>
               <i>
                 Last update:{' '}
-                {lichessAccount.lastFetch?.toISOString() || 'never'}
+                {lichessAccount.lastFetch?.toLocaleString() || 'never'}
               </i>
             </span>
           )}
@@ -71,7 +71,7 @@ export const UserDetails = ({ user }: UserProps) => {
               <span>{`Lichess Username: ${chesscomAccount.username}`}</span>
               <i>
                 Last update:{' '}
-                {chesscomAccount.lastFetch?.toISOString() || 'never'}
+                {chesscomAccount.lastFetch?.toLocaleString() || 'never'}
               </i>
             </span>
           )}
