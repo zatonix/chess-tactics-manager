@@ -1,16 +1,12 @@
-import { nextAuthConfig } from '@/pages/api/auth/[...nextauth]'
-import { getServerSession } from 'next-auth/next'
-import { redirect } from 'next/navigation'
+import { checkServerSessionOrRedirect } from '@/lib/authentication'
+import { UserDetails } from './UserDetails'
 
-export default async function Profile() {
-    const session = await getServerSession(nextAuthConfig)
-    if (!session) {
-        return redirect('/signin')
-    }
+export default async function ProfilePage() {
+    const user = await checkServerSessionOrRedirect()
 
     return (
         <>
-        Profile
+        <UserDetails user={user!} />
         </>
     )
 }

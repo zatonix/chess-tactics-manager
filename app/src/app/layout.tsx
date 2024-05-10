@@ -1,6 +1,6 @@
 import React from 'react'
-import { Toaster } from 'react-hot-toast'
 import './globals.css'
+import { Providers } from './providers'
 
 export const metadata = {
   title: 'Chess Tactics Manager',
@@ -14,21 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body className='font-sans min-h-screen bg-background antialiased' suppressHydrationWarning={true}>
-       {children}
-        <Toaster
-          position='top-center'
-          reverseOrder={false}
-          toastOptions={{
-            duration: 5000,
-            style: {
-              borderRadius: '10px',
-              background: '#121212',
-              color: '#fff',
-              maxWidth: '500px',
-            },
-          }}
-        />
+      <body className='min-h-screen overflow-x-hidden bg-background font-sans antialiased'>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   )

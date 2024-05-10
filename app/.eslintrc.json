@@ -1,14 +1,20 @@
 {
     "extends": [
         "next/core-web-vitals",
-        "eslint:recommended"
+        "eslint:recommended",
+        "plugin:cypress/recommended",
+        "plugin:tailwindcss/recommended"
+    ],
+    "plugins": [
+        "prettier",
+        "@typescript-eslint"
     ],
     "rules": {
         "prettier/prettier": [
             "off",
             {},
             {
-                "usePrettierrc": false
+                "usePrettierrc": true
             }
         ],
         "semi": [
@@ -22,8 +28,9 @@
         ],
         "max-len": [
             "error",
-            120,
-            2
+            {
+                "code": 120
+            }
         ],
         "object-curly-spacing": [
             "error",
@@ -66,8 +73,7 @@
         "no-plusplus": "error",
         "prefer-const": "error",
         "radix": "error",
-        "react/jsx-one-expression-per-line": "error",
-        "camelcase": "off",
+        "camelcase": 1,
         "jsx-a11y/no-noninteractive-element-interactions": "off",
         "jsx-a11y/click-events-have-key-events": "off",
         "jsx-a11y/no-static-element-interactions": "off",

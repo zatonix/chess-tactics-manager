@@ -1,30 +1,25 @@
-import { SignupForm } from '@/components/auth/SignupForm'
-import { nextAuthConfig } from '@/pages/api/auth/[...nextauth]'
-import { getServerSession } from 'next-auth/next'
-import Image from 'next/image'
+import { AuthImage } from '@/components/auth/AuthImage'
+import { SignupForm } from '@/app/(auth)/signup/signup.form'
+import { checkNotAuthenticatedOrRedirect } from '@/lib/authentication'
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
 
-export default async function SignIn() {
-    const session = await getServerSession(nextAuthConfig)
-    if (session) {
-        return redirect('/')
-    }
+export default async function SignupPage() {
+    await checkNotAuthenticatedOrRedirect()
 
     return (
-        <div className='w-full min-h-screen bg-foreground flex text-white items-center justify-center border-none'>
-            <div className='flex flex-col justify-around items-center w-full lg:w-5/12'>
-                <h1 className='scroll-m-20 border-b pb-2 mb-10 text-3xl font-semibold tracking-tight first:mt-0'>
+        <div className='flex min-h-screen w-full items-center justify-center border-none bg-foreground text-white'>
+            <div className='flex w-full flex-col items-center justify-around lg:w-5/12'>
+                <h1 className='mb-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0'>
                     Chess Tactics Manager
                 </h1>
-                <h2 className='text-2xl font-semibold mb-10'>
+                <h2 className='mb-10 text-2xl font-semibold'>
                     Create account
                 </h2>
-                <div className='w-3/4 md:w-1/2 text-left'>
+                <div className='w-3/4 text-left md:w-1/2'>
                     <SignupForm />
-                    <p className='text-sm text-center mt-10'>
+                    <p className='mt-10 text-center text-sm'>
                         Already have an account?
-                        <span className='text-primary ml-1 hover:underline'>
+                        <span className='ml-1 text-primary hover:underline'>
                             <Link href='/signin'>
                                 Sign In
                             </Link>
@@ -32,11 +27,7 @@ export default async function SignIn() {
                     </p>
                 </div>
             </div>
-            <Image
-                src='/login.jpg' alt='background'
-                width={1920} height={1080}
-                className='object-cover object-center h-screen w-7/12 hidden lg:block'
-            />
+            <AuthImage />
         </div>
     )
 }

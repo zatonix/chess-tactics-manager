@@ -1,12 +1,7 @@
-import { nextAuthConfig } from '@/pages/api/auth/[...nextauth]'
-import { getServerSession } from 'next-auth/next'
-import { redirect } from 'next/navigation'
+import { checkServerSessionOrRedirect } from '@/lib/authentication'
 
-export default async function Stats() {
-    const session = await getServerSession(nextAuthConfig)
-    if (!session) {
-        return redirect('/signin')
-    }
+export default async function StatsPage() {
+    await checkServerSessionOrRedirect()
 
     return (
         <>

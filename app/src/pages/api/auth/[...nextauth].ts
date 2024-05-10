@@ -1,12 +1,10 @@
-import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import { PrismaClient } from '@prisma/client'
-import NextAuth, { NextAuthOptions } from 'next-auth'
-
-import GoogleProvider from 'next-auth/providers/google'
-import CredentialsProvider from 'next-auth/providers/credentials'
+import prisma from '@/lib/database'
 import { isPasswordValid } from '@/lib/password'
-
-const prisma = new PrismaClient()
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import NextAuth, { NextAuthOptions } from 'next-auth'
+import CredentialsProvider from 'next-auth/providers/credentials'
+import FacebookProvider from 'next-auth/providers/facebook'
+import GoogleProvider from 'next-auth/providers/google'
 
 export const nextAuthConfig = {
   providers: [
@@ -14,12 +12,16 @@ export const nextAuthConfig = {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_CLIENT_ID!,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
+    }),
     CredentialsProvider({
       name: 'Credentials',
       id: 'credentials',
       credentials: {
         email: { label: 'Email', type: 'text' },
-        password: {  label: 'Password', type: 'password' }
+        password: { label: 'Password', type: 'password' }
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null
@@ -29,7 +31,7 @@ export const nextAuthConfig = {
           }
         })
 
-        if (user && await isPasswordValid(credentials.password, user?.password ?? '')) {
+        if (user && await isPasswordValid(credentials.password, user?.password || '')) {
           return user
         }
 
