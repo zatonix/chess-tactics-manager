@@ -5,6 +5,16 @@ import { client } from '@/trigger'
 
 export const triggerLichessSync = async (accountId: string) => {
   console.log('Triggering lichess sync for', accountId)
+
+  await prisma.chessAccount.update({
+    where: {
+      id: accountId
+    },
+    data: {
+      isFetching: true
+    }
+  })
+  
   await client.sendEvent({
     name: 'lichess.sync',
     payload: { accountId }

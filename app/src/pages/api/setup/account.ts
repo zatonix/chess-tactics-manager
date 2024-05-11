@@ -37,7 +37,7 @@ export default async function handler(
         .json({ success: true })
     }
   } else if (req.method === 'PUT') {
-    const sessionToken = req.cookies['__Secure-next-auth.session-token']
+    const sessionToken = req.cookies['__Secure-next-auth.session-token'] || req.cookies['next-auth.session-token']
 
     console.log('sessionToken', sessionToken)
     
