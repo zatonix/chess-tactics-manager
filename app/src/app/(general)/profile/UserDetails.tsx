@@ -16,6 +16,8 @@ import { Button } from '@/components/ui/button'
 import { UserWithAccounts } from '@/lib/database'
 import toast from 'react-hot-toast'
 import { Loader2 } from 'lucide-react'
+import { infosHasChanged } from './check-change'
+import { useEffect } from 'react'
 
 interface UserProps {
   user: UserWithAccounts
@@ -32,6 +34,12 @@ export const UserDetails = ({ user }: UserProps) => {
   const chesscomAccount = user.chessAccounts.find(
     (account) => account.provider === 'chesscom'
   )
+
+  useEffect(() => {
+    setInterval(() => {
+      infosHasChanged(user)
+    }, 1000)
+  }, [user])
 
   return (
     <MotionCard
@@ -62,12 +70,13 @@ export const UserDetails = ({ user }: UserProps) => {
           {lichessAccount && (
             <span className='flex flex-col'>
               <span>{`Lichess Username: ${lichessAccount.username}`}</span>
-              <i>
+              <i suppressHydrationWarning>
                 Last update:{' '}
                 {lichessAccount.isFetching ? (
                   <Loader2 className='ml-1 size-4 animate-spin' />
                 ) : (
-                  lichessAccount.lastFetch?.toLocaleString() || 'never'
+                  lichessAccount?.lastFetch?.toLocaleString() ??
+                  'Never fetched'
                 )}
               </i>
             </span>
@@ -76,9 +85,14 @@ export const UserDetails = ({ user }: UserProps) => {
           {chesscomAccount && (
             <span className='flex flex-col'>
               <span>{`Lichess Username: ${chesscomAccount.username}`}</span>
-              <i>
+              <i suppressHydrationWarning>
                 Last update:{' '}
-                {chesscomAccount.lastFetch?.toLocaleString() || 'never'}
+                {chesscomAccount.isFetching ? (
+                  <Loader2 className='ml-1 size-4 animate-spin' />
+                ) : (
+                  chesscomAccount?.lastFetch?.toLocaleString() ??
+                  'Never fetched'
+                )}
               </i>
             </span>
           )}
@@ -86,6 +100,7 @@ export const UserDetails = ({ user }: UserProps) => {
       </CardHeader>
       <CardContent className='grid gap-4'>
         <Button
+          disabled={lichessAccount?.isFetching}
           onClick={async () => {
             await triggerLichessSync(lichessAccount?.id ?? '')
             toast.success('Synchronization started')
