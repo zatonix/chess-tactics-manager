@@ -17,7 +17,7 @@ import { UserWithAccounts } from '@/lib/database'
 import toast from 'react-hot-toast'
 import { Loader2 } from 'lucide-react'
 import { infosHasChanged } from './check-change'
-import { useEffect } from 'react'
+import { useInterval } from 'usehooks-ts'
 
 interface UserProps {
   user: UserWithAccounts
@@ -35,12 +35,13 @@ export const UserDetails = ({ user }: UserProps) => {
     (account) => account.provider === 'chesscom'
   )
 
-  useEffect(() => {
-    setInterval(() => {
+  useInterval(
+    () => {
       infosHasChanged(user)
-    }, 1000)
-  }, [user])
-
+    },
+    1000
+  )
+  
   return (
     <MotionCard
       className={cn(
