@@ -9,9 +9,9 @@ import { render } from '@react-email/components'
 import { nanoid } from 'nanoid'
 import { ForgotPasswordSchema } from './forgot-password.schema'
 
-export const forgotPasswordAction = nobodyAction(
-    ForgotPasswordSchema,
-    async (input) => {
+export const forgotPasswordAction = nobodyAction
+    .schema(ForgotPasswordSchema)
+    .action(async ({ parsedInput }) => {
         const headersList = headers()
 
         const userAgents = headersList.get('user-agent') || 'Unknown'
@@ -19,7 +19,7 @@ export const forgotPasswordAction = nobodyAction(
 
         const user = await prisma.user.findUnique({
             where: {
-                email: input.email
+                email: parsedInput.email
             },
         })
 
@@ -44,13 +44,12 @@ export const forgotPasswordAction = nobodyAction(
             },
         })
 
-        sendEmail(input.email, 'CTM - Reset password request', render(
+        sendEmail(parsedInput.email, 'CTM - Reset password request', render(
             ResetPasswordEmail({
-                resetEmail: input.email,
+                resetEmail: parsedInput.email,
                 resetPasswordLink: `${process.env.NEXT_APP_URL}/reset-password?token=${securedTokenId}`,
                 resetFromIp: ip,
                 resetFromLocation: userAgents,
             })
         ))
-    }
-)
+    })
