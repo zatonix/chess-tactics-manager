@@ -9,7 +9,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/chess-tactics-manager-app']
 
-  - name: 'deploy to Cloud Run'
+  - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: '/bin/sh'
     args:
       - '-c'
