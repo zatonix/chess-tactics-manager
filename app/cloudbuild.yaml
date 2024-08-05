@@ -1,10 +1,10 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/chess-tactics-manager-app:$COMMIT_SHA', '-f', './Dockerfile', '..']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/chess-tactics-manager-app:${_COMMIT_SHA}', '-f', './Dockerfile', '..']
     dir: 'app'
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/chess-tactics-manager-app:$COMMIT_SHA']
+    args: ['push', 'gcr.io/$PROJECT_ID/chess-tactics-manager-app:${_COMMIT_SHA}']
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
@@ -13,7 +13,7 @@ steps:
       - 'deploy'
       - 'chess-tactics-manager-app'
       - '--image'
-      - 'gcr.io/$PROJECT_ID/chess-tactics-manager-app:$COMMIT_SHA'
+      - 'gcr.io/$PROJECT_ID/chess-tactics-manager-app:${_COMMIT_SHA}'
       - '--platform'
       - 'managed'
       - '--region'
@@ -24,10 +24,10 @@ steps:
 
 substitutions:
   _BRANCH: ${_BRANCH}
-  COMMIT_SHA: ${COMMIT_SHA}
+  _COMMIT_SHA: ${_COMMIT_SHA}
 
 images:
-  - 'gcr.io/$PROJECT_ID/chess-tactics-manager-app:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/chess-tactics-manager-app:${_COMMIT_SHA}'
 
 options:
   logging: CLOUD_LOGGING_ONLY

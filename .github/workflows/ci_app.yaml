@@ -21,8 +21,12 @@ jobs:
           service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
           project_id: 'chess-tactics-manager-ci'
 
+      - name: Get current Git commit SHA
+        id: vars
+        run: |
+          echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
+  
       - name: Run Cloud Build
         run: |
-          COMMIT_SHA=$(git rev-parse --short HEAD)
-          BRANCH=$(git rev-parse --abbrev-ref HEAD)
-          gcloud builds submit --config app/cloudbuild.yaml .. --substitutions=_BRANCH=$BRANCH,COMMIT_SHA=$COMMIT_SHA
+          gcloud builds submit --config app/cloudbuild.yaml .. --substitutions=_BRANCH=${{ env.BRANCH }},COMMIT_SHA=${{ env.COMMIT_SHA }}
