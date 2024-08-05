@@ -24,8 +24,7 @@ steps:
       - '--allow-unauthenticated'
       - '--port'
       - '8080'
-      - '--set-env-vars'
-      - '$(cat .env | xargs)'
+      - '--set-env-vars=$(tr "\n" "," < .env)'
 
 images:
   - 'gcr.io/$PROJECT_ID/chess-tactics-manager-app'
