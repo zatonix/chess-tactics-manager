@@ -24,3 +24,5 @@ steps:
 
 images:
   - 'gcr.io/$PROJECT_ID/chess-tactics-manager-app'
+options:
+  logging: CLOUD_LOGGING_ONLY
