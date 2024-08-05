@@ -8,7 +8,8 @@ steps:
       - '-c'
       - |
         export $(grep -v '^#' .env | xargs) && \
-        ENV_VARS=$(grep -v '^#' .env | xargs | sed 's/ /,/g')
+        ENV_VARS=$(grep -v '^#' .env | xargs | sed 's/ /,/g') && \
+        echo $ENV_VARS > /workspace/env_vars.txt
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/chess-tactics-manager-app', '-f', './Dockerfile', '..']
@@ -17,23 +18,19 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/chess-tactics-manager-app']
 
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'gcloud'
+  - name: 'deploy to Cloud Run'
+    entrypoint: '/bin/sh'
     args:
-      - 'run'
-      - 'deploy'
-      - 'chess-tactics-manager-app'
-      - '--image'
-      - 'gcr.io/$PROJECT_ID/chess-tactics-manager-app'
-      - '--platform'
-      - 'managed'
-      - '--region'
-      - 'europe-west1'
-      - '--allow-unauthenticated'
-      - '--port'
-      - '8080'
-      - '--set-env-vars'
-      - '$ENV_VARS'
+      - '-c'
+      - |
+        ENV_VARS=$(cat /workspace/env_vars.txt) && \
+        gcloud run deploy chess-tactics-manager-app \
+          --image gcr.io/$PROJECT_ID/chess-tactics-manager-app \
+          --platform managed \
+          --region europe-west1 \
+          --allow-unauthenticated \
+          --port 8080 \
+          --set-env-vars $ENV_VARS
 
 images:
   - 'gcr.io/$PROJECT_ID/chess-tactics-manager-app'
