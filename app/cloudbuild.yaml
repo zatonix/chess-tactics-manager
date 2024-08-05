@@ -1,4 +1,7 @@
 steps:
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: ['cp', 'gs://ctm-environment-prod/app/.env', '.env']
+
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/chess-tactics-manager-app', '-f', './Dockerfile', '..']
     dir: 'app'
@@ -21,6 +24,8 @@ steps:
       - '--allow-unauthenticated'
       - '--port'
       - '8080'
+      - '--set-env-vars'
+      - '$(cat .env | xargs)'
 
 images:
   - 'gcr.io/$PROJECT_ID/chess-tactics-manager-app'
