@@ -18,8 +18,12 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1
         with:
           version: 'latest'
-          service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
           project_id: 'chess-tactics-manager-ci'
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
 
       - name: Get current Git commit SHA
         id: vars
