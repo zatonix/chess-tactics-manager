@@ -33,4 +33,4 @@ jobs:
   
       - name: Run Cloud Build
         run: |
-          gcloud builds submit --config app/cloudbuild.yaml .. --substitutions=_BRANCH=${{ env.BRANCH }},COMMIT_SHA=${{ env.COMMIT_SHA }}
+          gcloud builds submit --config app/cloudbuild.yaml ..
