@@ -14,23 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
+      - uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: chess-tactics-manager-ci
+          APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         with:
-          version: 'latest'
-          project_id: 'chess-tactics-manager-ci'
-
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v1
-        with:
-          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
-
-      - name: Get current Git commit SHA
-        id: vars
-        run: |
-          echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          echo "BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
-  
-      - name: Run Cloud Build
-        run: |
-          gcloud builds submit --config app/cloudbuild.yaml ..
+          args: -q --project=chess-tactics-manager-ci beta builds submit --config=./app/cloudbuild.yaml --no-source --substitutions="COMMIT_SHA=${{ github.sha }},_BRANCH=${{ github.head_ref }}"
