@@ -1,12 +1,4 @@
 steps:
-  - name: 'gcr.io/cloud-builders/gcloud'
-    id: git-clone
-    entrypoint: /bin/bash
-    args:
-    - '-c'
-    - |
-      gcloud source repos clone repo-chess-tactics-manager ctm && cd ctm && git checkout ${_BRANCH}
-
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/chess-tactics-manager-app:$COMMIT_SHA', '-f', './Dockerfile', '..']
     dir: 'app'
