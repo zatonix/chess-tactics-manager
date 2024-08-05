@@ -104,7 +104,9 @@ export const ChessGame = () => {
                   </i>
                 </thead>
                 {chunk(game.pgn.split(' '), 2).map(
-                  (moves: string[], index: number) => {
+                 
+                   // @ts-ignore
+                   (moves: string[], index: number) => { 
                     return (
                       <tr
                         className='flex justify-around text-xs odd:bg-foreground'

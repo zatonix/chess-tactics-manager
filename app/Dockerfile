@@ -1,0 +1,15 @@
+FROM node:22-alpine
+
+WORKDIR /app
+
+COPY app . 
+COPY prisma .
+
+RUN npm install --legacy-peer-deps
+RUN npm run build
+
+EXPOSE 8080
+
+ENV PORT 8080
+
+CMD ["npm", "start"]
