@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+  oauth_token_secret String?
+  oauth_token        String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String    @id @default(cuid())
+  userId     String    @unique
+  token      String    @unique
+  expires    DateTime?
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ------------------------------------------------------------------------
+model User {
+  id                String             @id @default(cuid())
+  name              String?
+  email             String?            @unique
+  password          String?
+  emailVerified     DateTime?
+  image             String?
+  accounts          Account[]
+  sessions          Session[]
+  verificationToken VerificationToken?
+  chessAccounts     ChessAccount[]
+}
+
+model ChessAccount {
+  id         String    @id @default(cuid())
+  userId     String    @unique
+  provider   String
+  username   String
+  isFetching Boolean  @default(false)
+  lastFetch  DateTime?
+  rating     Int?
+
+  gamesAsWhite Game[] @relation("WhiteChessAccount")
+  gamesAsBlack Game[] @relation("BlackChessAccount")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, username])
+}
+
+enum GameCategory {
+  bullet
+  blitz
+  rapid
+  classical
+}
+
+enum GameStatus {
+  mate
+  draw
+  resign
+  outoftime
+  timeout
+  stalemate
+}
+
+enum GameWinner {
+  white
+  black
+  draw
+}
+
+model Game {
+  id                  String       @id @default(cuid())
+  whiteChessAccountId String?
+  blackChessAccountId String?
+  category            GameCategory
+  rated               Boolean
+  whitePlayer         String
+  whiteRating         Int
+  blackPlayer         String
+  blackRating         Int
+  winner              GameWinner
+  status              GameStatus
+  pgn                 String
+  opening             String
+  clocks              Int[]
+  date                DateTime
+
+  whiteChessAcount ChessAccount? @relation(name: "WhiteChessAccount", fields: [whiteChessAccountId], references: [id])
+  blackChessAcount ChessAccount? @relation(name: "BlackChessAccount", fields: [blackChessAccountId], references: [id])
+}

@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "outDir": "dist",
+    "rootDir": "src",
+    "strict": true
+  },
+  "include": ["src/**/*"],
+  "paths": {
+      "@prisma/client": ["../node_modules/@prisma/client"]
+  }
+}

@@ -2,7 +2,6 @@
     "extends": [
         "next/core-web-vitals",
         "eslint:recommended",
-        "plugin:cypress/recommended",
         "plugin:tailwindcss/recommended"
     ],
     "plugins": [
