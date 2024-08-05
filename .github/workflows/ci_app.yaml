@@ -20,4 +20,3 @@ jobs:
           APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         with:
           args: -q --project=chess-tactics-manager-ci builds submit --config=./app/cloudbuild.yaml --no-source --substitutions="COMMIT_SHA=${{ github.sha }},_BRANCH=${{ github.head_ref }}"
-
