@@ -1,0 +1,23 @@
+name: Application CI
+
+on:
+  pull_request:
+    paths:
+      - app/**
+      - '.github/workflows/ci_app.yml'
+    
+jobs:
+  app:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: chess-tactics-manager-ci
+          APPLICATION_CREDENTIALS: ${{ secrets.CI_GOOGLE_APPLICATION_CREDENTIALS }}
+        with:
+          args: -q --project=chess-tactics-manager-ci builds submit --config=./app/cloudbuild.yaml --no-source --substitutions="COMMIT_SHA=${{ github.sha }},_BRANCH=${{ github.head_ref }}"
+
