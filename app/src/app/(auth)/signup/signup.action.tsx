@@ -5,10 +5,10 @@ import { ActionError, nobodyAction } from '@/lib/safe-actions'
 import { hashPassword } from '@/lib/password'
 import { SignupActionSchema } from './signup.schema'
 
-export const signupAction = nobodyAction(
-    SignupActionSchema,
-    async (input) => {
-        const newUser = input
+export const signupAction = nobodyAction
+    .schema(SignupActionSchema)
+    .action(async ({ parsedInput }) => {
+        const newUser = parsedInput
         const userExists = await prisma.user.findUnique({
             where: {
                 email: newUser.email,

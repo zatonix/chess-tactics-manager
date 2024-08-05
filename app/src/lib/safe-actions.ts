@@ -1,5 +1,5 @@
 import { getSession } from 'next-auth/react'
-import { createSafeActionClient } from 'next-safe-action'
+import { createSafeActionClient, DEFAULT_SERVER_ERROR_MESSAGE } from 'next-safe-action'
 
 export class ActionError extends Error {
     constructor(message: string) {
@@ -8,27 +8,27 @@ export class ActionError extends Error {
     }
 }
 
-const handleReturnedServerError = (error: Error) => {
-    if (error instanceof ActionError) {
-        return error.message
+const handleReturnedServerError = (e: Error) => {
+    if (e instanceof ActionError) {
+        return e.message
     }
 
-    return 'An unexpected error occurred'
+  return DEFAULT_SERVER_ERROR_MESSAGE
 }
 
 export const nobodyAction = createSafeActionClient({
     handleReturnedServerError
-})
+  }
+)
 
 export const userAction = createSafeActionClient({
-    handleReturnedServerError,
-    middleware: async () => {
-        const session = await getSession()
-        if (!session || !session.user) {
-            throw new ActionError('You need to be logged in to perform this action')
-        }
-
-        return session.user
+    handleReturnedServerError
+}).use(async ({ next }) => {
+    const session = await getSession()
+    if (!session || !session.user) {
+        throw new ActionError('You need to be logged in to perform this action')
     }
+
+    return next({ ctx: session.user })
 })
 

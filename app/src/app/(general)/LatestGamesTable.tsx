@@ -97,7 +97,7 @@ const columns = [
               year: 'numeric'
             })}
           </TooltipTrigger>
-          <TooltipContent className='rounded-none border-primary border-l-4 bg-black p-2 text-white shadow-xl'>
+          <TooltipContent className='rounded-none border-l-4 border-primary bg-black p-2 text-white shadow-xl'>
             {info.getValue().toLocaleString('en-EN', {
               day: 'numeric',
               month: 'short',

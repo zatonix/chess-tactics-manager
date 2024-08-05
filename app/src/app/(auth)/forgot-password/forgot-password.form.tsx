@@ -42,9 +42,10 @@ export const ForgotPasswordForm = () => {
                 return
             }
 
-            const { serverError } = await forgotPasswordAction(formData)
-            if (serverError) {
-                form.setError('root', { message: serverError || 'An unexpected error occurred' })
+            try {
+                await forgotPasswordAction(formData)
+            } catch (e: any) {
+                form.setError('root', { message: e.message })
                 return
             }
 

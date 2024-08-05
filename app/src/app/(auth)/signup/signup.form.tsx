@@ -38,9 +38,10 @@ export const SignupForm = () => {
                 return
             }
 
-            const { data, serverError } = await signupAction(newUser)
-            if (serverError || !data) {
-                form.setError('root', { message: serverError || 'An unexpected error occurred' })
+            const result = await signupAction(newUser)
+
+            if (result?.serverError || !result?.data) {
+                form.setError('root', { message: result?.serverError || 'An unexpected error occurred' })
                 return
             }
 
