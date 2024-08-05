@@ -1,10 +1,10 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/chess-tactics-manager-app', '-f', './Dockerfile', '..']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/chess-tactics-manager-app:$COMMIT_SHA:-latest', '-f', './Dockerfile', '..']
     dir: 'app'
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/chess-tactics-manager-app']
+    args: ['push', 'gcr.io/$PROJECT_ID/chess-tactics-manager-app:$COMMIT_SHA:-latest']
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
@@ -13,7 +13,7 @@ steps:
       - 'deploy'
       - 'chess-tactics-manager-app'
       - '--image'
-      - 'gcr.io/$PROJECT_ID/chess-tactics-manager-app'
+      - 'gcr.io/$PROJECT_ID/chess-tactics-manager-app:$COMMIT_SHA:-latest'
       - '--platform'
       - 'managed'
       - '--region'
@@ -22,7 +22,12 @@ steps:
       - '--port'
       - '8080'
 
+substitutions:
+  _BRANCH: ${_BRANCH}
+  COMMIT_SHA: ${COMMIT_SHA}
+  
 images:
-  - 'gcr.io/$PROJECT_ID/chess-tactics-manager-app'
+  - 'gcr.io/$PROJECT_ID/chess-tactics-manager-app:$COMMIT_SHA:-latest'
+
 options:
   logging: CLOUD_LOGGING_ONLY
