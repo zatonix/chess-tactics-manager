@@ -33,7 +33,7 @@ steps:
       - '--port'
       - '8080'
       - '--set-env-vars'
-      - '${ENV_VARS}'
+      - '$ENV_VARS'
 
 images:
   - 'gcr.io/$PROJECT_ID/chess-tactics-manager-app'
