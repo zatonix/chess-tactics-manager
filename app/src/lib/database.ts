@@ -17,5 +17,5 @@ if (process.env.NODE_ENV !== 'production') global.prismaGlobal = prisma
 
 
 export type UserWithAccounts = Prisma.UserGetPayload<{
-  include: { chessAccounts: true }
+  include: { chessAccounts: { include: { chessAccount: true } } }
 }>

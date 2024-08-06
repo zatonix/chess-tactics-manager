@@ -47,7 +47,30 @@ export const updateLichessAccount = async (accountId: string) => {
       })
   
       if (gameExist) {
-        console.log('Game already exists')
+        if ((gameExist.whiteChessAccountId === accountId || gameExist.blackChessAccountId === accountId)) {
+          console.log('Game already exists for the account', account.username)
+        }
+        else {
+          if (gameExist.whiteChessAccountId) {
+            await prisma.game.update({
+              where: {
+                id: game.id
+              },
+              data: {
+                blackChessAccountId: accountId
+              }
+            })
+          } else {
+            await prisma.game.update({
+              where: {
+                id: game.id
+              },
+              data: {
+                whiteChessAccountId: accountId
+              }
+            })
+          }
+        }
         continue
       }
   
