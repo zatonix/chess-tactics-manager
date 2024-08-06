@@ -1,5 +1,6 @@
 'use server'
 
+import { isEmpty, isNil } from 'lodash'
 import prisma from '@/lib/database'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { decode } from 'next-auth/jwt'
@@ -46,8 +47,6 @@ export default async function handler(
       secret: process.env.NEXTAUTH_SECRET!,
     })
 
-    console.log('decodedUser', decodedUser)
-
     if (!decodedUser || !decodedUser.email) {
       res.status(403).json({ success: false })
       return
@@ -55,7 +54,8 @@ export default async function handler(
 
     const { lichessUsername, chesscomUsername }  = req.body
 
-    if (lichessUsername === undefined && chesscomUsername === undefined) {
+    if ((isNil(lichessUsername) || isEmpty(lichessUsername)) && 
+        (isNil(chesscomUsername) || isEmpty(chesscomUsername))) {
       res.status(400).json({ success: false })
       return
     }
@@ -71,7 +71,7 @@ export default async function handler(
       return
     }
     
-    if (lichessUsername !== undefined) {
+    if (!isNil(lichessUsername) && !isEmpty(lichessUsername)) {
       await prisma.chessAccount.create({
         data: {
           provider: 'lichess',
@@ -79,9 +79,18 @@ export default async function handler(
           userId: user.id
         },
       })
-      }
+    }
 
-    
+    if (!isNil(chesscomUsername) && !isEmpty(chesscomUsername)) {
+      await prisma.chessAccount.create({
+        data: {
+          provider: 'chesscom',
+          username: chesscomUsername,
+          userId: user.id
+        },
+      })
+    }
+
     res.status(200).json({ success: true })
   } else {
     res.status(400).json({ success: false })

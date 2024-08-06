@@ -126,6 +126,14 @@ export const LatestGamesTable = ({ games }: LatestGamesTableProps) => {
     getCoreRowModel: getCoreRowModel()
   })
 
+  if (games.length === 0) {
+    return (
+      <div className='h-72 w-full flex items-center justify-center'>
+        <span>No game found yet</span>
+      </div>
+    )
+  }
+
   return (
     <div className='h-72 w-full overflow-scroll p-0'>
       <table className='w-full'>
