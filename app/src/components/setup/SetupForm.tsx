@@ -78,8 +78,8 @@ export const SetupForm = () => {
     }
 
     return (
-        <form className='mt-10 w-full ' onSubmit={handleSubmit}>
-            <div className='flex w-full justify-center'>
+        <form className='w-full mt-10 ' onSubmit={handleSubmit}>
+            <div className='flex justify-center w-full'>
                 <div className='w-3/4'>
                     <Label htmlFor='chesscom'>
                         Chess.com
@@ -112,7 +112,7 @@ export const SetupForm = () => {
             </div>
             <Button
                 type='submit'
-                className='mt-5 w-full'
+                className='w-full mt-5'
                 disabled={!verifiedAccount['lichess'] && !verifiedAccount['chesscom']}
             >
                 Save settings

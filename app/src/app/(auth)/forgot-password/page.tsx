@@ -6,9 +6,9 @@ export default async function ForgotPage() {
     await checkNotAuthenticatedOrRedirect()
 
     return (
-        <div className='flex size-full items-center justify-center border-none bg-foreground text-white'>
-            <div className='flex w-full flex-col items-center justify-around lg:w-5/12'>
-                <h1 className='mb-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight'>
+        <div className='flex items-center justify-center text-white border-none size-full bg-foreground'>
+            <div className='flex flex-col items-center justify-around w-full lg:w-5/12'>
+                <h1 className='pb-2 mb-10 text-3xl font-semibold tracking-tight border-b scroll-m-20'>
                     Chess Tactics Manager
                 </h1>
                 <div className='w-3/4 text-left md:w-1/2'>

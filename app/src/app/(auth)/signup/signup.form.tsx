@@ -124,11 +124,11 @@ export const SignupForm = () => {
                 )}
             />
 
-            {form.formState.errors.root && <div className='mb-5 mt-2 text-xs text-red-500'>
+            {form.formState.errors.root && <div className='mt-2 mb-5 text-xs text-red-500'>
                 {form.formState.errors.root.message}
             </div>}
 
-            <div className='mt-4 flex justify-center'>
+            <div className='flex justify-center mt-4'>
                 <ReCAPTCHA
                     sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
                     ref={recaptchaRef}
@@ -139,7 +139,7 @@ export const SignupForm = () => {
 
             <Button
                 type='submit'
-                className='dark mt-4 w-full rounded-none' size='lg'
+                className='w-full mt-4 rounded-none dark' size='lg'
                 disabled={!isCaptchaVerified || form.formState.isSubmitting}
             >
                 Register

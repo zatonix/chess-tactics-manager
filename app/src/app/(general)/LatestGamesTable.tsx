@@ -63,7 +63,7 @@ const columns = [
     header: () => <span>Tags</span>,
     cell: (info) => {
       return (
-        <Badge className='rounded-none bg-white/20 text-white'>
+        <Badge className='text-white rounded-none bg-white/20'>
           {info.getValue()}
         </Badge>
       )
@@ -97,7 +97,7 @@ const columns = [
               year: 'numeric'
             })}
           </TooltipTrigger>
-          <TooltipContent className='rounded-none border-l-4 border-primary bg-black p-2 text-white shadow-xl'>
+          <TooltipContent className='p-2 text-white bg-black border-l-4 rounded-none shadow-xl border-primary'>
             {info.getValue().toLocaleString('en-EN', {
               day: 'numeric',
               month: 'short',
@@ -128,14 +128,14 @@ export const LatestGamesTable = ({ games }: LatestGamesTableProps) => {
 
   if (games.length === 0) {
     return (
-      <div className='h-72 w-full flex items-center justify-center'>
+      <div className='flex items-center justify-center w-full h-72'>
         <span>No game found yet</span>
       </div>
     )
   }
 
   return (
-    <div className='h-72 w-full overflow-scroll p-0'>
+    <div className='w-full p-0 overflow-scroll h-72'>
       <table className='w-full'>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (

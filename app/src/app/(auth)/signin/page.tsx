@@ -10,10 +10,10 @@ export default async function SignInPage() {
     await checkNotAuthenticatedOrRedirect()
 
     return (
-        <div className='flex min-h-screen w-full items-center justify-center border-none bg-foreground text-white'>
+        <div className='flex items-center justify-center w-full min-h-screen text-white border-none bg-foreground'>
             <AuthImage />
-            <div className='flex w-full flex-col items-center justify-around lg:w-5/12'>
-                <h1 className='mb-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0'>
+            <div className='flex flex-col items-center justify-around w-full lg:w-5/12'>
+                <h1 className='pb-2 mb-10 text-3xl font-semibold tracking-tight border-b scroll-m-20 first:mt-0'>
                     Chess Tactics Manager
                 </h1>
                 <div className='w-3/4 text-left md:w-1/2'>
