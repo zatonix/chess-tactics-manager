@@ -11,7 +11,7 @@ export default async function SetupPage() {
             </h1>
             <p>
                 Welcome to Chess Tactics Manager !
-                Here you can set up your account.
+                Here you can set up your chess account.
             </p>
             <SetupForm />
         </>

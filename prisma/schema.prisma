@@ -61,7 +61,7 @@ model User {
 
 model ChessAccount {
   id         String    @id @default(cuid())
-  userId     String    @unique
+  userId     String    
   provider   String
   username   String
   isFetching Boolean  @default(false)
@@ -72,8 +72,6 @@ model ChessAccount {
   gamesAsBlack Game[] @relation("BlackChessAccount")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, username])
 }
 
 enum GameCategory {
