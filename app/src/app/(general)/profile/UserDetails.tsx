@@ -18,7 +18,6 @@ import toast from 'react-hot-toast'
 import { Loader2 } from 'lucide-react'
 import { infosHasChanged } from './check-change'
 import { useInterval } from 'usehooks-ts'
-import { useMutation } from '@tanstack/react-query'
 
 interface UserProps {
   user: UserWithAccounts
