@@ -1,0 +1,32 @@
+steps:
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: ['cp', 'gs://ctm-environment-prod/lichess-synchronizer/.env', 'lichess-synchronizer/.env']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/lichess-synchronizer', '-f', './Dockerfile', '..']
+    dir: 'app'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['run', '-v', './dist:/app/dist', 'gcr.io/$PROJECT_ID/lichess-synchronizer']
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: '/bin/sh'
+    args:
+      - '-c'
+      - |
+        gcloud functions deploy lichess-synchronizer \
+          --runtime nodejs20 \
+          --memory 128MB \
+          --trigger-http \
+          --source ./dist \
+          --no-gen2 \
+          --entry-point lichessSynchronizerFunction \
+          --region europe-west1 \
+          --service-account 94517653133-compute@developer.gserviceaccount.com \
+          --set-env-vars=$(tr '\n' ',' < app/.env)
+
+images:
+  - 'gcr.io/$PROJECT_ID/lichess-synchronizer'
+  
+options:
+  logging: CLOUD_LOGGING_ONLY
