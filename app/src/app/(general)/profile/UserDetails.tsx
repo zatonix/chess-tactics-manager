@@ -53,7 +53,7 @@ export const UserDetails = ({ user }: UserProps) => {
     >
       <CardHeader>
         <CardTitle>
-          <div className='flex flex-row gap-2 align-baseline'>
+          <div className='flex flex-row align-baseline gap-2'>
             <Avatar>
               <AvatarImage
                 src={`https://api.dicebear.com/8.x/bottts-neutral/svg?seed=${user.email}`}

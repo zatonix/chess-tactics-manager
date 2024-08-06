@@ -6,7 +6,7 @@ export default async function SetupPage() {
 
     return (
         <>
-            <h1 className='mb-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0'>
+            <h1 className='pb-2 mb-10 text-3xl font-semibold tracking-tight border-b scroll-m-20 first:mt-0'>
                 Setup
             </h1>
             <p>

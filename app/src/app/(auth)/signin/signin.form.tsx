@@ -80,7 +80,7 @@ export const SigninForm = () => {
                 )}
             />
 
-            {form.formState.errors.root && <div className='mb-5 mt-2 text-xs text-red-500'>
+            {form.formState.errors.root && <div className='mt-2 mb-5 text-xs text-red-500'>
                 {form.formState.errors.root.message}
             </div>}
 
@@ -106,7 +106,7 @@ export const SigninForm = () => {
                 </Link>
             </div>
             <Button
-                className='dark mt-4 w-full rounded-none'
+                className='w-full mt-4 rounded-none dark'
                 disabled={form.formState.isSubmitting}
                 type='submit'
                 size='lg'

@@ -39,7 +39,7 @@ export const ResetPasswordEmail = ({
         {previewText}
       </Preview>
       <Tailwind config={config}>
-        <Body className='m-auto bg-background px-2 font-sans'>
+        <Body className='px-2 m-auto font-sans bg-background'>
           <Container className={`mx-auto my-[40px] max-w-[465px] rounded border border-y-0 border-l-4
             border-r-0 border-solid border-primary bg-foreground p-[20px]`}>
             <Section className='mt-[32px]'>

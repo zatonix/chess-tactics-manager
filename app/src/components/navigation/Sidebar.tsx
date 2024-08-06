@@ -22,10 +22,10 @@ export const Sidebar = () => {
 
     return (
         // eslint-disable-next-line tailwindcss/no-custom-classname
-        <div className='h-18 fixed z-10 w-screen bg-foreground shadow-lg md:h-full md:w-16'>
+        <div className='fixed z-10 w-screen shadow-lg h-18 bg-foreground md:h-full md:w-16'>
             <div className='flex items-center justify-around md:h-full md:flex-col md:justify-between'>
                 <Link href='/' className='hidden md:block'>
-                    <Image src='/logo.png' width='220' height='220' alt='logo' className='m-2 w-12 hover:scale-110' />
+                    <Image src='/logo.png' width='220' height='220' alt='logo' className='w-12 m-2 hover:scale-110' />
                 </Link>
                 <div className='flex gap-14 md:flex-col'>
                     <SidebarButton

@@ -64,8 +64,8 @@ export const ChessGame = () => {
         'border-primary border-l-4 border-r-0 border-t-0 border-b-0 text-white rounded-none'
       )}
     >
-      <div className='flex size-full overflow-x-scroll p-4 px-8'>
-        <div className='flex size-full items-center xl:w-2/3'>
+      <div className='flex p-4 px-8 overflow-x-scroll size-full'>
+        <div className='flex items-center size-full xl:w-2/3'>
           <div className=''>
             <Chessboard
               id='BasicBoard'
@@ -75,8 +75,8 @@ export const ChessGame = () => {
               customLightSquareStyle={{ backgroundColor: '#BAC3E4' }}
             />
           </div>
-          <div className='flex size-full min-w-64 flex-col items-start justify-start gap-2 p-2 pt-4'>
-            <div className='flex w-full justify-around'>
+          <div className='flex flex-col items-start justify-start p-2 pt-4 size-full min-w-64 gap-2'>
+            <div className='flex justify-around w-full'>
               <Image src='/blitz.svg' width={20} height={20} alt='White' />
               <div>
                 {new Date(game.date).toLocaleDateString('en-US', {
@@ -86,7 +86,7 @@ export const ChessGame = () => {
                 })}
               </div>
             </div>
-            <div className='grid w-full justify-center'>
+            <div className='justify-center w-full grid'>
               <div className='flex gap-8'>
                 <span className='w-32'>{game.whitePlayer}</span>
                 <span className='w-16'>{game.whiteRating}</span>
@@ -96,9 +96,9 @@ export const ChessGame = () => {
                 <span className='w-16'>{game.blackRating}</span>
               </div>
             </div>
-            <div className='max-h-52 w-full overflow-y-scroll'>
-              <table className='m-auto w-2/3'>
-                <thead className='bg-foreground text-center'>
+            <div className='w-full overflow-y-scroll max-h-52'>
+              <table className='w-2/3 m-auto'>
+                <thead className='text-center bg-foreground'>
                   <i className='flex items-center justify-around text-sm'>
                     {game.opening} <BookOpenText size={14} />
                   </i>
@@ -143,7 +143,7 @@ export const ChessGame = () => {
                 )}
               </table>
             </div>
-            <div className='mt-4 flex w-full justify-around'>
+            <div className='flex justify-around w-full mt-4'>
               <Button onClick={previousMove} disabled={moveIndex <= 0}>
                 <StepBack />
               </Button>
@@ -156,7 +156,7 @@ export const ChessGame = () => {
             </div>
           </div>
         </div>
-        <div className='hidden h-full w-1/3 items-center justify-center bg-foreground xl:flex'>
+        <div className='items-center justify-center hidden w-1/3 h-full bg-foreground xl:flex'>
           <Text as='h4'>No analysis yet</Text>
         </div>
       </div>

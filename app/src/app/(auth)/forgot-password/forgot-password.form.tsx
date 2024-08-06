@@ -79,7 +79,7 @@ export const ForgotPasswordForm = () => {
                 )}
             />
 
-            <div className='mt-4 flex justify-center'>
+            <div className='flex justify-center mt-4'>
                 <ReCAPTCHA
                     sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
                     ref={recaptchaRef}
@@ -89,7 +89,7 @@ export const ForgotPasswordForm = () => {
             </div>
 
             <Button
-                className='dark mb-10 mt-4 w-full rounded-none'
+                className='w-full mt-4 mb-10 rounded-none dark'
                 type='submit'
                 disabled={!isVerified || form.formState.isSubmitting}
                 size='lg'
@@ -98,9 +98,9 @@ export const ForgotPasswordForm = () => {
                 {form.formState.isSubmitting && <Loader2 className='ml-1 size-4 animate-spin' />}
             </Button>
 
-            <p className='mt-5 flex flex-row justify-center align-baseline'>
+            <p className='flex flex-row justify-center mt-5 align-baseline'>
                 <ArrowLeft className='text-sm' />
-                <Link href='/signin' className='ml-1 text-center text-sm hover:underline'>
+                <Link href='/signin' className='ml-1 text-sm text-center hover:underline'>
                     Back to login
                 </Link>
             </p>

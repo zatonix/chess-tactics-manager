@@ -133,6 +133,7 @@
         "no-restricted-globals": "off",
         "no-return-assign": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
-        "@typescript-eslint/no-non-null-asserted-optional-chain": "off"
+        "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
+        "tailwindcss/classnames-order": "off"
     }
 }

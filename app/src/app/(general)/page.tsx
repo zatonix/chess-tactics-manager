@@ -17,10 +17,10 @@ export default async function DashboardPage() {
     where: {
       OR: [
         ...chessAccounts.map((account) => {
-          return { whiteChessAccountId: account.id }
+          return { whiteChessAccountId: account.chessAccount.id }
         }),
         ...chessAccounts.map((account) => {
-          return { blackChessAccountId: account.id }
+          return { blackChessAccountId: account.chessAccount.id }
         }),
       ]
     },

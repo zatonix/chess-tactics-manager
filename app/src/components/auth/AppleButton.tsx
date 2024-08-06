@@ -12,7 +12,7 @@ export const AppleButton = () => {
                     text-white hover:bg-[#050708]/80 dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600'
         >
             <svg
-                className='-ms-1 me-2 h-6 w-5'
+                className='w-5 h-6 -ms-1 me-2'
                 aria-hidden='true' focusable='false' data-prefix='fab' data-icon='apple' role='img'
                 xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'>
                 <path fill='currentColor'

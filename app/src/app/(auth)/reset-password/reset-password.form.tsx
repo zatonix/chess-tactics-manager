@@ -67,7 +67,7 @@ export const ResetPasswordForm = () => {
         </Label>
         <Input type='password' name='pasword' placeholder='Type your password' value={userInfos.password}
             onChange={(e) => setUserInfos({ ...userInfos, password: e.target.value })}
-            className='mb-4 mt-2 h-10 w-full rounded-none border border-background bg-background px-3 py-2 shadow-md'
+            className='w-full h-10 px-3 py-2 mt-2 mb-4 border rounded-none shadow-md border-background bg-background'
         />
         <Label htmlFor='confirmPassword'>
             Confirm password
@@ -75,14 +75,14 @@ export const ResetPasswordForm = () => {
         <Input type='password' name='confirmPassword'
             placeholder='Confirm your password' value={userInfos.confirmPassword}
             onChange={(e) => setUserInfos({ ...userInfos, confirmPassword: e.target.value })}
-            className='mb-4 mt-2 h-10 w-full rounded-none border border-background bg-background px-3 py-2 shadow-md'
+            className='w-full h-10 px-3 py-2 mt-2 mb-4 border rounded-none shadow-md border-background bg-background'
         />
         {errorMsg.length > 0 &&
             <div className='text-xs text-red-500'>
                 {errorMsg}
             </div>}
         <Button
-            className='dark mb-10 mt-4 w-full rounded-none'
+            className='w-full mt-4 mb-10 rounded-none dark'
             onClick={submitForm}
             disabled={isLoading || !userInfos.password || !userInfos.confirmPassword}
             size='lg'
@@ -90,9 +90,9 @@ export const ResetPasswordForm = () => {
             Reset your password
             {isLoading && <Loader2 className='ml-1 size-4 animate-spin' />}
         </Button>
-        <p className='mt-5 flex flex-row justify-center align-baseline'>
+        <p className='flex flex-row justify-center mt-5 align-baseline'>
             <ArrowLeft className='text-sm' />
-            <Link href='/signin' className='ml-1 text-center text-sm hover:underline'>
+            <Link href='/signin' className='ml-1 text-sm text-center hover:underline'>
                 Back to login
             </Link>
         </p>
