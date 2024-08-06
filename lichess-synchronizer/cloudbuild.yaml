@@ -15,6 +15,7 @@ steps:
       - '-c'
       - |
         gcloud functions deploy lichess-synchronizer \
+          --project $PROJECT_ID \
           --runtime nodejs20 \
           --memory 128MB \
           --trigger-http \
