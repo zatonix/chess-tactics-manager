@@ -1,7 +1,7 @@
 'use server'
 
 import prisma from '@/lib/database'
-import { client } from '@/trigger'
+import { createLichessSynchonizerTask } from '@/lib/cloudtask'
 
 export const triggerLichessSync = async (accountId: string) => {
   console.log('Triggering lichess sync for', accountId)
@@ -14,11 +14,8 @@ export const triggerLichessSync = async (accountId: string) => {
       isFetching: true
     }
   })
-  
-  await client.sendEvent({
-    name: 'lichess.sync',
-    payload: { accountId }
-  })
+
+  await createLichessSynchonizerTask(accountId)
 }
 
 export const updateLichessAccount = async (accountId: string) => {

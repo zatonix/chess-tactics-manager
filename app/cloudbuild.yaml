@@ -1,4 +1,8 @@
 steps:
+
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: ['cp', 'gs://ctm-credentials-prod/ctm-synchronizer-service-account.json', 'app/credentials/ctm-synchronizer-service-account.json']
+  
   - name: 'gcr.io/cloud-builders/gsutil'
     args: ['cp', 'gs://ctm-environment-prod/app/.env', 'app/.env']
 
