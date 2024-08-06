@@ -7,7 +7,7 @@ steps:
     dir: 'lichess-synchronizer'
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['run', '-v', './dist:/app/dist', 'gcr.io/$PROJECT_ID/lichess-synchronizer']
+    args: ['run', '-v', '/workspace/dist:/app/dist', 'gcr.io/$PROJECT_ID/lichess-synchronizer']
 
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: '/bin/sh'
@@ -18,12 +18,12 @@ steps:
           --runtime nodejs20 \
           --memory 128MB \
           --trigger-http \
-          --source ./dist \
+          --source /workspace/dist \
           --no-gen2 \
           --entry-point lichessSynchronizerFunction \
           --region europe-west1 \
           --service-account 94517653133-compute@developer.gserviceaccount.com \
-          --set-env-vars=$(tr '\n' ',' < app/.env)
+          --set-env-vars=$(tr '\n' ',' < lichess-synchronizer/.env)
 
 images:
   - 'gcr.io/$PROJECT_ID/lichess-synchronizer'
