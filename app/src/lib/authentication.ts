@@ -13,12 +13,16 @@ export const checkServerSessionOrRedirect = async (checkSetup: boolean = true): 
 
     const user = await prisma.user.findUnique({
         where: {
-            email: session.user.email,
+          email: session.user.email,
         },
         include: {
-            chessAccounts: true
+          chessAccounts: {
+            include: {
+              chessAccount: true,
+            },
+          },
         },
-    })
+      })
 
     if (!user) {
         return redirect('/signin')
@@ -27,7 +31,7 @@ export const checkServerSessionOrRedirect = async (checkSetup: boolean = true): 
     if (isEmpty(user.chessAccounts) && checkSetup) {
         return redirect('/setup')
     }
-
+    
     return user
 }
 

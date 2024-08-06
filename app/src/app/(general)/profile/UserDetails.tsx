@@ -29,11 +29,11 @@ export const UserDetails = ({ user }: UserProps) => {
 
 
   const lichessAccount = user.chessAccounts.find(
-    (account) => account.provider === 'lichess'
-  )
+    (account) => account.chessAccount.provider === 'lichess'
+  )?.chessAccount
   const chesscomAccount = user.chessAccounts.find(
-    (account) => account.provider === 'chesscom'
-  )
+    (account) => account.chessAccount.provider === 'chesscom'
+  )?.chessAccount
 
   useInterval(
     () => {

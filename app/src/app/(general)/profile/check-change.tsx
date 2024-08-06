@@ -10,17 +10,21 @@ export const infosHasChanged = async (user: UserWithAccounts) => {
 
   const accounts = await prisma.chessAccount.findMany({
     where: {
-      userId: user.id
+      users: {
+        some: {
+          user: { email: user.email }
+        }
+      }
     }
   })
 
   const hasChanged = user.chessAccounts.some((currentAccount) =>
     accounts.some(
       (account) =>
-        account.id === currentAccount.id &&
-        (account.isFetching !== currentAccount.isFetching ||
+        account.id === currentAccount.chessAccount.id &&
+        (account.isFetching !== currentAccount.chessAccount.isFetching ||
           account.lastFetch?.toUTCString() !==
-            currentAccount.lastFetch?.toUTCString())
+            currentAccount.chessAccount.lastFetch?.toUTCString())
     )
   )
 

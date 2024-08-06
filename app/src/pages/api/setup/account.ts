@@ -76,7 +76,11 @@ export default async function handler(
         data: {
           provider: 'lichess',
           username: lichessUsername,
-          userId: user.id
+          users: {
+            create: {
+              userId: user.id
+            }
+          }
         },
       })
     }
@@ -86,7 +90,11 @@ export default async function handler(
         data: {
           provider: 'chesscom',
           username: chesscomUsername,
-          userId: user.id
+          users: {
+            create: {
+              userId: user.id
+            }
+          }
         },
       })
     }
