@@ -186,7 +186,7 @@ export default async function DashboardPage() {
       >
         <CardHeader>
           <CardTitle>Victory Ratio</CardTitle>
-          <Text as='h3'>{victoryRatioAverage}%</Text>
+          <Text as='h3'>{victoryRatioAverage.toFixed(2)}%</Text>
         </CardHeader>
         <CardContent className='flex flex-col'>
           <RatioVictoryChart data={victoryRatioData} />

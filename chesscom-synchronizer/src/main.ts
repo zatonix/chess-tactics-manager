@@ -19,7 +19,7 @@ export const updateChesscomAccount = async (accountId: string) => {
   
     updateAccountStatus(accountId, true)
   
-    const archives = await getChesscomArchives(account.username)
+    const archives = await getChesscomArchives(account.username.trim())
     
     if (archives.length === 0) {
       console.log('No archives found')
