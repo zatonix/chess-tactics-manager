@@ -4,9 +4,9 @@ FROM node:22-alpine
 WORKDIR /app
 
 COPY ./prisma ./prisma
-COPY lichess-synchronizer/tsconfig.json .
-COPY lichess-synchronizer/package*.json .
-COPY lichess-synchronizer/src src/
+COPY chesscom-synchronizer/tsconfig.json .
+COPY chesscom-synchronizer/package*.json .
+COPY chesscom-synchronizer/src src/
 
 RUN npm install
 

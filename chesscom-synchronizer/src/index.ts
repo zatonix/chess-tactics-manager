@@ -16,5 +16,3 @@ export const chesscomSynchronizerFunction = async (req: Request, res: Response) 
     res.status(500).send(error)
   }
 }
-
-updateChesscomAccount('clziyxk2k0003nui2w3a1xild')
