@@ -3,7 +3,7 @@ import { Text } from '@/components/ui/text'
 import { MotionCard } from '@/components/ui/motion-card'
 import { checkServerSessionOrRedirect } from '@/lib/authentication'
 import { cn } from '@/lib/utils'
-import { PrecisionChart } from './PrecisionChart'
+import { RatioVictoryChart } from './RatioVictoryChart'
 import { LatestGamesTable } from './LatestGamesTable'
 import prisma from '@/lib/database'
 import { ChessGame } from './ChessGame'
@@ -21,14 +21,134 @@ export default async function DashboardPage() {
         }),
         ...chessAccounts.map((account) => {
           return { blackChessAccountId: account.chessAccount.id }
-        }),
+        })
       ]
     },
     orderBy: {
       date: 'desc'
     },
-    take: 15
+    take: 25
   })
+
+  // get count of games from accounts
+  const totalGamesCount = await prisma.game.count({
+    where: {
+      OR: [
+        ...chessAccounts.map((account) => {
+          return { whiteChessAccountId: account.chessAccount.id }
+        }),
+        ...chessAccounts.map((account) => {
+          return { blackChessAccountId: account.chessAccount.id }
+        })
+      ]
+    }
+  })
+
+  const getGamesLastSixMonths = async () => {
+    const results = []
+
+    const currentDate = new Date()
+
+    for (let i = 0; i < 6; i++) {
+      const month = currentDate.getMonth() - i
+      const year = currentDate.getFullYear()
+
+      const startDate = new Date(year, month, 1)
+      const endDate = new Date(year, month + 1, 0)
+
+      const gamesCount = await prisma.game.count({
+        where: {
+          OR: [
+            ...chessAccounts.map((account) => ({
+              whiteChessAccountId: account.chessAccount.id
+            })),
+            ...chessAccounts.map((account) => ({
+              blackChessAccountId: account.chessAccount.id
+            }))
+          ],
+          date: {
+            gte: startDate,
+            lte: endDate
+          }
+        }
+      })
+
+      results.push({
+        month: startDate.toLocaleString('default', { month: 'short' }),
+        games: gamesCount
+      })
+    }
+
+    return results.reverse() 
+  }
+
+  const getWinPercentageLastSixMonths = async () => {
+    const results = [];
+    const currentDate = new Date();
+  
+    for (let i = 0; i < 6; i++) {
+      const month = currentDate.getMonth() - i;
+      const year = currentDate.getFullYear();
+      const startDate = new Date(year, month, 1);
+      const endDate = new Date(year, month + 1, 0);
+  
+      const winCount = await prisma.game.count({
+        where: {
+          OR: [
+            {
+              whiteChessAccountId: {
+                in: chessAccounts.map((account) => account.chessAccount.id)
+              },
+              winner: 'white'
+            },
+            {
+              blackChessAccountId: {
+                in: chessAccounts.map((account) => account.chessAccount.id)
+              },
+              winner: 'black'
+            }
+          ],
+          date: {
+            gte: startDate,
+            lte: endDate,
+          },
+        },
+      });
+  
+      const totalCount = await prisma.game.count({
+        where: {
+          OR: [
+            {
+              whiteChessAccountId: {
+                in: chessAccounts.map((account) => account.chessAccount.id)
+              }
+            },
+            {
+              blackChessAccountId: {
+                in: chessAccounts.map((account) => account.chessAccount.id)
+              }
+            }
+          ],
+          date: {
+            gte: startDate,
+            lte: endDate,
+          },
+        },
+      });
+  
+      const winPercentage = totalCount > 0 ? (winCount / totalCount) * 100 : 0;
+  
+      results.push({
+        month: startDate.toLocaleString('default', { month: 'short' }),
+        precision: Number(winPercentage.toFixed(2)),
+      });
+    }
+  
+    return results.reverse(); 
+  }
+
+  const victoryRatioData = await getWinPercentageLastSixMonths()
+  const victoryRatioAverage = victoryRatioData.reduce((acc, curr) => acc + curr.precision, 0) / victoryRatioData.length
 
   return (
     <div className='grid size-full grid-flow-row-dense grid-cols-12 gap-4'>
@@ -52,10 +172,10 @@ export default async function DashboardPage() {
       >
         <CardHeader>
           <CardTitle>Number of games</CardTitle>
-          <Text as='h2'>46</Text>
+          <Text as='h3'>{totalGamesCount}</Text>
         </CardHeader>
         <CardContent className='flex flex-col'>
-          <CountGameChart />
+          <CountGameChart data={await getGamesLastSixMonths()} />
         </CardContent>
       </MotionCard>
 
@@ -65,11 +185,11 @@ export default async function DashboardPage() {
         )}
       >
         <CardHeader>
-          <CardTitle>Average accuracy</CardTitle>
-          <Text as='h2'>54.28</Text>
+          <CardTitle>Victory Ratio</CardTitle>
+          <Text as='h3'>{victoryRatioAverage}%</Text>
         </CardHeader>
         <CardContent className='flex flex-col'>
-          <PrecisionChart />
+          <RatioVictoryChart data={victoryRatioData} />
         </CardContent>
       </MotionCard>
 

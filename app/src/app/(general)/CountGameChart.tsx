@@ -10,33 +10,6 @@ import {
   YAxis
 } from 'recharts'
 
-const data = [
-  {
-    month: 'Nov.',
-    games: 40
-  },
-  {
-    month: 'Dec.',
-    games: 30
-  },
-  {
-    month: 'Jan.',
-    games: 20
-  },
-  {
-    month: 'Feb.',
-    games: 27
-  },
-  {
-    month: 'Mar.',
-    games: 78
-  },
-  {
-    month: 'Apr.',
-    games: 56
-  }
-]
-
 interface BarWithBorderProps {
   fill: string
   x: number
@@ -77,7 +50,12 @@ const BarWithBorder = () => {
   return ShapeComponent
 }
 
-export const CountGameChart = () => {
+interface CountGameChartProps {
+  data: { month: string; games: number }[]
+}
+
+export const CountGameChart = ({ data }: CountGameChartProps) => {
+  console.log(data)
   return (
     <ResponsiveContainer width='100%' height={230}>
       <BarChart

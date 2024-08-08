@@ -10,34 +10,11 @@ import {
   YAxis
 } from 'recharts'
 
-const data = [
-  {
-    month: 'Nov.',
-    precision: 40
-  },
-  {
-    month: 'Dec.',
-    precision: 30
-  },
-  {
-    month: 'Jan.',
-    precision: 20
-  },
-  {
-    month: 'Feb.',
-    precision: 27
-  },
-  {
-    month: 'Mar.',
-    precision: 78
-  },
-  {
-    month: 'Apr.',
-    precision: 56
-  }
-]
+interface RatioVictoryChartProps {
+  data: { month: string; precision: number }[]
+}
 
-export const PrecisionChart = () => {
+export const RatioVictoryChart = ({ data }: RatioVictoryChartProps) => {
   return (
     <ResponsiveContainer width='100%' height={230}>
       <AreaChart
