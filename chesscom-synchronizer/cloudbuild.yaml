@@ -1,0 +1,33 @@
+steps:
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: ['cp', 'gs://ctm-environment-prod/chesscom-synchronizer/.env', 'chesscom-synchronizer/.env']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/chesscom-synchronizer', '-f', './Dockerfile', '..']
+    dir: 'chesscom-synchronizer'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['run', '-v', '/workspace/dist:/app/dist', 'gcr.io/$PROJECT_ID/chesscom-synchronizer']
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: '/bin/sh'
+    args:
+      - '-c'
+      - |
+        gcloud functions deploy chesscom-synchronizer \
+          --project $PROJECT_ID \
+          --runtime nodejs20 \
+          --memory 128MB \
+          --trigger-http \
+          --source /workspace/dist \
+          --no-gen2 \
+          --entry-point chesscomSynchronizerFunction \
+          --region europe-west1 \
+          --service-account 94517653133-compute@developer.gserviceaccount.com \
+          --set-env-vars=$(tr '\n' ',' < chesscom-synchronizer/.env)
+
+images:
+  - 'gcr.io/$PROJECT_ID/chesscom-synchronizer'
+  
+options:
+  logging: CLOUD_LOGGING_ONLY

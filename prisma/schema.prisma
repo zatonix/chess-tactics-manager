@@ -91,6 +91,7 @@ enum GameCategory {
   blitz
   rapid
   classical
+  daily
 }
 
 enum GameStatus {

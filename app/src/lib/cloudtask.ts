@@ -42,3 +42,33 @@ export const createLichessSynchonizerTask = async (accountId: string) => {
 
   console.log(`Created task ${response.name}`)
 }
+
+export const createChesscomTask = async (accountId: string) => {
+  const project = process.env.GCP_PROJECT_ID!
+  const location = process.env.GCP_LOCATION!
+  const queue = process.env.GCP_CHESSCOM_SYNCHRONIZER_QUEUE!
+  const url = process.env.GCP_CHESSCOM_SYNCHRONIZER_URL
+
+  const parent = cloudTaskClient.queuePath(project, location, queue)
+
+  const [response] = await cloudTaskClient.createTask(
+    {
+      parent,
+      task: {
+        httpRequest: {
+          httpMethod: 'POST',
+          url,
+          body: Buffer.from(JSON.stringify({ accountId })).toString('base64'),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          oidcToken: {
+            serviceAccountEmail,
+          }
+        },
+      },
+    }
+  )
+
+  console.log(`Created task ${response.name}`)
+}
