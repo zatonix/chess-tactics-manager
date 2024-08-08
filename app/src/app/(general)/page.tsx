@@ -49,7 +49,7 @@ export default async function DashboardPage() {
 
     const currentDate = new Date()
 
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; i += 1) {
       const month = currentDate.getMonth() - i
       const year = currentDate.getFullYear()
 
@@ -83,14 +83,14 @@ export default async function DashboardPage() {
   }
 
   const getWinPercentageLastSixMonths = async () => {
-    const results = [];
-    const currentDate = new Date();
+    const results = []
+    const currentDate = new Date()
   
-    for (let i = 0; i < 6; i++) {
-      const month = currentDate.getMonth() - i;
-      const year = currentDate.getFullYear();
-      const startDate = new Date(year, month, 1);
-      const endDate = new Date(year, month + 1, 0);
+    for (let i = 0; i < 6; i += 1) {
+      const month = currentDate.getMonth() - i
+      const year = currentDate.getFullYear()
+      const startDate = new Date(year, month, 1)
+      const endDate = new Date(year, month + 1, 0)
   
       const winCount = await prisma.game.count({
         where: {
@@ -113,7 +113,7 @@ export default async function DashboardPage() {
             lte: endDate,
           },
         },
-      });
+      })
   
       const totalCount = await prisma.game.count({
         where: {
@@ -134,17 +134,17 @@ export default async function DashboardPage() {
             lte: endDate,
           },
         },
-      });
+      })
   
-      const winPercentage = totalCount > 0 ? (winCount / totalCount) * 100 : 0;
+      const winPercentage = totalCount > 0 ? (winCount / totalCount) * 100 : 0
   
       results.push({
         month: startDate.toLocaleString('default', { month: 'short' }),
         precision: Number(winPercentage.toFixed(2)),
-      });
+      })
     }
   
-    return results.reverse(); 
+    return results.reverse() 
   }
 
   const victoryRatioData = await getWinPercentageLastSixMonths()
