@@ -1,26 +1,45 @@
+import { ChessGame } from '@/components/game/chess-game'
+import { FilterButton } from '@/components/game/filter-button'
+import { GameFilters } from '@/components/game/game.store'
+import { LatestGamesTable } from '@/components/game/latest-games-table'
+import { ComputedNumber } from '@/components/stats/computed-value'
+import { CountGameChart } from '@/components/stats/count-game-chart'
+import { RatioVictoryChart } from '@/components/stats/ratio-victory-chart'
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Text } from '@/components/ui/text'
 import { MotionCard } from '@/components/ui/motion-card'
+import { Text } from '@/components/ui/text'
 import { checkServerSessionOrRedirect } from '@/lib/authentication'
-import { cn } from '@/lib/utils'
-import { RatioVictoryChart } from './RatioVictoryChart'
-import { LatestGamesTable } from './LatestGamesTable'
 import prisma from '@/lib/database'
-import { ChessGame } from './ChessGame'
-import { CountGameChart } from './CountGameChart'
+import { 
+  countTotalGames, 
+  getGamesLastSixMonths, 
+  getWinPercentageAverage, 
+  getWinPercentageLastSixMonths 
+} from '@/lib/stats/insights-data'
+import { cn } from '@/lib/utils'
+
+const EMPTY_FILTERS: GameFilters = {
+  providers: [],
+  categories: [],
+  winner: [],
+  tags: [],
+  adversary: [],
+  analysed: []
+}
 
 export default async function DashboardPage() {
   const user = await checkServerSessionOrRedirect()
-  const chessAccounts = user?.chessAccounts || []
+  const chessAccounts =
+    user?.chessAccounts.map((account) => account.chessAccount) || []
 
   const games = await prisma.game.findMany({
     where: {
       OR: [
         ...chessAccounts.map((account) => {
-          return { whiteChessAccountId: account.chessAccount.id }
+          return { whiteChessAccountId: account.id }
         }),
         ...chessAccounts.map((account) => {
-          return { blackChessAccountId: account.chessAccount.id }
+          return { blackChessAccountId: account.id }
         })
       ]
     },
@@ -30,166 +49,78 @@ export default async function DashboardPage() {
     take: 25
   })
 
-  // get count of games from accounts
-  const totalGamesCount = await prisma.game.count({
-    where: {
-      OR: [
-        ...chessAccounts.map((account) => {
-          return { whiteChessAccountId: account.chessAccount.id }
-        }),
-        ...chessAccounts.map((account) => {
-          return { blackChessAccountId: account.chessAccount.id }
-        })
-      ]
-    }
-  })
-
-  const getGamesLastSixMonths = async () => {
-    const results = []
-
-    const currentDate = new Date()
-
-    for (let i = 0; i < 6; i += 1) {
-      const month = currentDate.getMonth() - i
-      const year = currentDate.getFullYear()
-
-      const startDate = new Date(year, month, 1)
-      const endDate = new Date(year, month + 1, 0)
-
-      const gamesCount = await prisma.game.count({
-        where: {
-          OR: [
-            ...chessAccounts.map((account) => ({
-              whiteChessAccountId: account.chessAccount.id
-            })),
-            ...chessAccounts.map((account) => ({
-              blackChessAccountId: account.chessAccount.id
-            }))
-          ],
-          date: {
-            gte: startDate,
-            lte: endDate
-          }
-        }
-      })
-
-      results.push({
-        month: startDate.toLocaleString('default', { month: 'short' }),
-        games: gamesCount
-      })
-    }
-
-    return results.reverse() 
-  }
-
-  const getWinPercentageLastSixMonths = async () => {
-    const results = []
-    const currentDate = new Date()
-  
-    for (let i = 0; i < 6; i += 1) {
-      const month = currentDate.getMonth() - i
-      const year = currentDate.getFullYear()
-      const startDate = new Date(year, month, 1)
-      const endDate = new Date(year, month + 1, 0)
-  
-      const winCount = await prisma.game.count({
-        where: {
-          OR: [
-            {
-              whiteChessAccountId: {
-                in: chessAccounts.map((account) => account.chessAccount.id)
-              },
-              winner: 'white'
-            },
-            {
-              blackChessAccountId: {
-                in: chessAccounts.map((account) => account.chessAccount.id)
-              },
-              winner: 'black'
-            }
-          ],
-          date: {
-            gte: startDate,
-            lte: endDate,
-          },
-        },
-      })
-  
-      const totalCount = await prisma.game.count({
-        where: {
-          OR: [
-            {
-              whiteChessAccountId: {
-                in: chessAccounts.map((account) => account.chessAccount.id)
-              }
-            },
-            {
-              blackChessAccountId: {
-                in: chessAccounts.map((account) => account.chessAccount.id)
-              }
-            }
-          ],
-          date: {
-            gte: startDate,
-            lte: endDate,
-          },
-        },
-      })
-  
-      const winPercentage = totalCount > 0 ? (winCount / totalCount) * 100 : 0
-  
-      results.push({
-        month: startDate.toLocaleString('default', { month: 'short' }),
-        precision: Number(winPercentage.toFixed(2)),
-      })
-    }
-  
-    return results.reverse() 
-  }
-
-  const victoryRatioData = await getWinPercentageLastSixMonths()
-  const victoryRatioAverage = victoryRatioData.reduce((acc, curr) => acc + curr.precision, 0) / victoryRatioData.length
+  const victoryRatioData = await getWinPercentageLastSixMonths(chessAccounts, EMPTY_FILTERS)
+  const victoryRatioAverage =
+    victoryRatioData.reduce((acc, curr) => acc + curr.precision, 0) /
+    victoryRatioData.length
 
   return (
     <div className='grid size-full grid-flow-row-dense grid-cols-12 gap-4'>
       <MotionCard
         className={cn(
-          'col-span-12 h-96 bg-foreground xl:col-span-6 p-2 text-white rounded-none border-none'
+          'col-span-12 h-full bg-foreground xl:col-span-6 p-2 text-white rounded-none border-none'
         )}
       >
         <CardHeader>
-          <CardTitle>Last games</CardTitle>
+          <CardTitle className='flex w-full justify-between items-center'>
+            <div>Last games</div>
+            <FilterButton />
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <LatestGamesTable games={games} />
+          <LatestGamesTable 
+            initialGames={games} 
+            chessAccounts={chessAccounts} 
+          />
         </CardContent>
       </MotionCard>
 
       <MotionCard
         className={cn(
-          'col-span-12 h-96 bg-foreground lg:col-span-6 xl:col-span-3 p-2 text-white rounded-none border-none'
+          'col-span-12 h-full bg-foreground lg:col-span-6 xl:col-span-3 p-2 text-white rounded-none border-none'
         )}
       >
         <CardHeader>
           <CardTitle>Number of games</CardTitle>
-          <Text as='h3'>{totalGamesCount}</Text>
+          <Text as='h4'>
+            <ComputedNumber
+              computedKey='totalGames'
+              initialValue={await countTotalGames(chessAccounts, EMPTY_FILTERS)}
+              chessAccounts={chessAccounts}
+              computedFunction={countTotalGames}
+            />
+          </Text>
         </CardHeader>
-        <CardContent className='flex flex-col'>
-          <CountGameChart data={await getGamesLastSixMonths()} />
+        <CardContent className='flex flex-col pt-8'>
+          <CountGameChart 
+            initialData={await getGamesLastSixMonths(chessAccounts, EMPTY_FILTERS)} 
+            chessAccounts={chessAccounts} 
+            />
         </CardContent>
       </MotionCard>
 
       <MotionCard
         className={cn(
-          'col-span-12 h-96 bg-foreground lg:col-span-6 xl:col-span-3 p-2 text-white rounded-none border-none'
+          'col-span-12 h-full bg-foreground lg:col-span-6 xl:col-span-3 p-2 text-white rounded-none border-none'
         )}
       >
         <CardHeader>
           <CardTitle>Victory Ratio</CardTitle>
-          <Text as='h3'>{victoryRatioAverage.toFixed(2)}%</Text>
+          <Text as='h4'>
+            <ComputedNumber 
+              computedKey='victoryRatio'
+              initialValue={victoryRatioAverage} 
+              chessAccounts={chessAccounts} 
+              computedFunction={getWinPercentageAverage}
+            />
+            %
+            </Text>
         </CardHeader>
-        <CardContent className='flex flex-col'>
-          <RatioVictoryChart data={victoryRatioData} />
+        <CardContent className='flex flex-col pt-8'>
+          <RatioVictoryChart 
+            initialData={victoryRatioData} 
+            chessAccounts={chessAccounts}
+          />
         </CardContent>
       </MotionCard>
 

@@ -1,4 +1,4 @@
-import { Sidebar } from '@/components/navigation/Sidebar'
+import { Sidebar } from '@/components/navigation/sidebar'
 import React from 'react'
 
 export default function GeneralLayout({

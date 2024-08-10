@@ -1,6 +1,6 @@
 import { ForgotPasswordForm } from '@/app/(auth)/forgot-password/forgot-password.form'
 import { checkNotAuthenticatedOrRedirect } from '@/lib/authentication'
-import { AuthImage } from '@/components/auth/AuthImage'
+import { AuthImage } from '@/components/auth/auth-image'
 
 export default async function ForgotPage() {
     await checkNotAuthenticatedOrRedirect()
