@@ -43,7 +43,7 @@ export const Sidebar = () => {
                         label='Profile' baseUrl='/profile' icon={<UserCog />} active={activeMenu === 'profile'}
                     />
                 </div>
-                <div className='hidden md:block'/>
+                <div className='hidden md:block' />
             </div>
         </div>
     )
