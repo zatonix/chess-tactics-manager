@@ -1,5 +1,11 @@
 'use client'
 
+import { queryClient } from '@/app/providers'
+import { getGamesLastSixMonths } from '@/lib/stats/insights-data'
+import { ChessAccount } from '@prisma/client'
+import { useQuery } from '@tanstack/react-query'
+import { Loader2 } from 'lucide-react'
+import { useEffect } from 'react'
 import {
   Bar,
   BarChart,
@@ -9,6 +15,7 @@ import {
   XAxis,
   YAxis
 } from 'recharts'
+import { useGameStore } from '../game/game.store'
 
 interface BarWithBorderProps {
   fill: string
@@ -51,11 +58,29 @@ const BarWithBorder = () => {
 }
 
 interface CountGameChartProps {
-  data: { month: string; games: number }[]
+  initialData: {
+    month: string
+    games: number
+  }[]
+  chessAccounts: ChessAccount[]
 }
 
-export const CountGameChart = ({ data }: CountGameChartProps) => {
-  console.log(data)
+export const CountGameChart = ({ initialData, chessAccounts }: CountGameChartProps) => {
+  const selectedFilters = useGameStore((state) => state.filters)
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['lastSixMonths'],
+    queryFn: async () => await getGamesLastSixMonths(chessAccounts, selectedFilters),
+    initialData: initialData,
+  })
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['lastSixMonths'] })
+  }, [selectedFilters, chessAccounts])
+
+  if (isLoading) return <Loader2 className='size-6 animate-spin' />
+  if (error) return <div>Error: {error.message}</div>
+
   return (
     <ResponsiveContainer width='100%' height={230}>
       <BarChart

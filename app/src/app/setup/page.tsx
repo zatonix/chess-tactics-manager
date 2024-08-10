@@ -1,4 +1,4 @@
-import { SetupForm } from '@/components/setup/SetupForm'
+import { SetupForm } from '@/components/setup/setup-form'
 import { checkServerSessionOrRedirect } from '@/lib/authentication'
 
 export default async function SetupPage() {

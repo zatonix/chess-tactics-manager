@@ -1,5 +1,5 @@
 import { checkServerSessionOrRedirect } from '@/lib/authentication'
-import { UserDetails } from './UserDetails'
+import { UserDetails } from './user-details'
 
 export default async function ProfilePage() {
   const user = await checkServerSessionOrRedirect()

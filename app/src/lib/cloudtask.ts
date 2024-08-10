@@ -2,6 +2,7 @@
 
 import { CloudTasksClient } from '@google-cloud/tasks'
 import fs from 'fs'
+import prisma from './database'
 
 const serviceAccountEmail = JSON.parse(
   fs.readFileSync(process.env.GCP_SERVICE_ACCOUNT!,
@@ -12,7 +13,16 @@ const cloudTaskClient = new CloudTasksClient({
   keyFilename: process.env.GCP_SERVICE_ACCOUNT
 })
 
-export const createLichessSynchonizerTask = async (accountId: string) => {  
+export const createLichessSynchonizerTask = async (accountId: string) => { 
+  await prisma.chessAccount.update({
+    where: {
+      id: accountId
+    },
+    data: {
+      isFetching: true
+    }
+  })
+   
   const project = process.env.GCP_PROJECT_ID!
   const location = process.env.GCP_LOCATION!
   const queue = process.env.GCP_LICHESS_SYNCHRONIZER_QUEUE!
@@ -44,6 +54,15 @@ export const createLichessSynchonizerTask = async (accountId: string) => {
 }
 
 export const createChesscomTask = async (accountId: string) => {
+  await prisma.chessAccount.update({
+    where: {
+      id: accountId
+    },
+    data: {
+      isFetching: true
+    }
+  })
+
   const project = process.env.GCP_PROJECT_ID!
   const location = process.env.GCP_LOCATION!
   const queue = process.env.GCP_CHESSCOM_SYNCHRONIZER_QUEUE!

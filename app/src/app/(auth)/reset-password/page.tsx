@@ -1,4 +1,4 @@
-import { AuthImage } from '@/components/auth/AuthImage'
+import { AuthImage } from '@/components/auth/auth-image'
 import { ResetPasswordForm } from '@/app/(auth)/reset-password/reset-password.form'
 import { checkNotAuthenticatedOrRedirect } from '@/lib/authentication'
 

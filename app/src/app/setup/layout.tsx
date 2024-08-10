@@ -1,4 +1,4 @@
-import { LogoutButton } from '@/components/auth/LogoutButton'
+import { LogoutButton } from '@/components/auth/logout-button'
 import { cn } from '@/lib/utils'
 import React from 'react'
 

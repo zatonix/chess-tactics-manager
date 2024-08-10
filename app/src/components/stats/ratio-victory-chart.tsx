@@ -1,5 +1,11 @@
 'use client'
 
+import { queryClient } from '@/app/providers'
+import { getWinPercentageLastSixMonths } from '@/lib/stats/insights-data'
+import { ChessAccount } from '@prisma/client'
+import { useQuery } from '@tanstack/react-query'
+import { Loader2 } from 'lucide-react'
+import { useEffect } from 'react'
 import {
   Area,
   AreaChart,
@@ -9,12 +15,29 @@ import {
   XAxis,
   YAxis
 } from 'recharts'
+import { useGameStore } from '../game/game.store'
 
 interface RatioVictoryChartProps {
-  data: { month: string; precision: number }[]
+  initialData: { month: string, precision: number }[]
+  chessAccounts: ChessAccount[]
 }
 
-export const RatioVictoryChart = ({ data }: RatioVictoryChartProps) => {
+export const RatioVictoryChart = ({ initialData, chessAccounts }: RatioVictoryChartProps) => {
+  const selectedFilters = useGameStore((state) => state.filters)
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['ratioVictory'],
+    queryFn: async () => await getWinPercentageLastSixMonths(chessAccounts, selectedFilters),
+    initialData: initialData,
+  })
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['ratioVictory'] })
+  }, [selectedFilters, chessAccounts])
+
+  if (isLoading) return <Loader2 className='size-6 animate-spin' />
+  if (error) return <div>Error: {error.message}</div>
+
   return (
     <ResponsiveContainer width='100%' height={230}>
       <AreaChart

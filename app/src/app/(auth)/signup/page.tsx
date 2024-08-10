@@ -1,4 +1,4 @@
-import { AuthImage } from '@/components/auth/AuthImage'
+import { AuthImage } from '@/components/auth/auth-image'
 import { SignupForm } from '@/app/(auth)/signup/signup.form'
 import { checkNotAuthenticatedOrRedirect } from '@/lib/authentication'
 import Link from 'next/link'

@@ -3,9 +3,9 @@
 
 import React, { useMemo } from 'react'
 import Image from 'next/image'
-import { LayoutDashboard, AreaChart, UserCog } from 'lucide-react'
+import { LayoutDashboard, AreaChart, UserCog, Swords } from 'lucide-react'
 import { usePathname } from 'next/navigation'
-import { SidebarButton } from './SidebarButton'
+import { SidebarButton } from './sidebar-button'
 import Link from 'next/link'
 
 export const Sidebar = () => {
@@ -16,6 +16,8 @@ export const Sidebar = () => {
             return 'stats'
         } else if (pathname?.startsWith('/profile')) {
             return 'profile'
+        } else if (pathname?.startsWith('/challenge')) {
+            return 'challenge'
         }
         return 'home'
     }, [pathname])
@@ -33,6 +35,9 @@ export const Sidebar = () => {
                     />
                     <SidebarButton
                         label='Stats' baseUrl='/stats' icon={<AreaChart />} active={activeMenu === 'stats'}
+                    />
+                    <SidebarButton
+                        label='Challenge' baseUrl='/challenge' icon={<Swords />} active={activeMenu === 'challenge'}
                     />
                     <SidebarButton
                         label='Profile' baseUrl='/profile' icon={<UserCog />} active={activeMenu === 'profile'}

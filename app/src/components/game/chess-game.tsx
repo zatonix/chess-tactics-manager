@@ -1,8 +1,7 @@
 'use client'
 
 import { Chessboard } from 'react-chessboard'
-import Image from 'next/image'
-import { useGameStore } from './GameStore'
+import { useGameStore } from './game.store'
 import { Chess } from 'chess.js'
 import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
@@ -12,6 +11,8 @@ import { MotionCard } from '@/components/ui/motion-card'
 import { chunk, isNil } from 'lodash'
 import { Text } from '@/components/ui/text'
 import { BookOpenText, StepBack, StepForward } from 'lucide-react'
+import { GameCategory } from '@prisma/client'
+import { GameCategoryIcon } from './game-category-icon'
 
 export const ChessGame = () => {
   const moveRefs = useRef<HTMLElement[]>([])
@@ -77,7 +78,7 @@ export const ChessGame = () => {
           </div>
           <div className='flex flex-col items-start justify-start p-2 pt-4 size-full min-w-64 gap-2'>
             <div className='flex justify-around w-full'>
-              <Image src='/blitz.svg' width={20} height={20} alt='White' />
+              <GameCategoryIcon category={game.category as GameCategory} />
               <div>
                 {new Date(game.date).toLocaleDateString('en-US', {
                   month: 'short',
