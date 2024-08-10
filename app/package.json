@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate --schema=../prisma/schema.prisma && next build",
-    "build:ci": "prisma generate --schema=./prisma/schema.prisma && next build",
+    "build": "npm run prisma:generate && next build",
+    "build:ci": "prisma generate && next build",
     "prisma:generate": "prisma generate --schema=../prisma/schema.prisma",
     "studio": "prisma studio",
     "start": "next start",
