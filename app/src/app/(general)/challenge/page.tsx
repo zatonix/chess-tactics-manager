@@ -59,102 +59,102 @@ export default async function StatsPage() {
     {
       name: 'Sicilian Defense',
       progress: getTotalGamesFromOpening('sicilian'),
-      total: [10, 50, 100, 1000]
+      total: [10, 25, 50, 100]
     },
     {
       name: 'French Defense',
       progress: getTotalGamesFromOpening('french'),
-      total: [10, 50, 100, 1000]
+      total: [10, 25, 50, 100]
     },
     {
       name: 'Caro-Kann Defense',
       progress: getTotalGamesFromOpening('kann'),
-      total: [10, 50, 100, 1000]
+      total: [10, 25, 50, 100]
     },
     {
       name: 'King\'s Indian Defense',
       progress: getTotalGamesFromOpening('king\'s indian'),
-      total: [10, 50, 100, 1000]
+      total: [10, 25, 50, 100]
     },
     {
       name: 'Queen\'s Gambit',
       progress: getTotalGamesFromOpening('queen\'s gambit'),
-      total: [10, 50, 100, 1000]
+      total: [10, 25, 50, 100]
     },
     {
       name: 'Ruy Lopez',
       progress: getTotalGamesFromOpening('lopez'),
-      total: [10, 50, 100, 1000]
+      total: [10, 25, 50, 100]
     },
     {
       name: 'Nimzo-Indian Defense',
       progress: getTotalGamesFromOpening('nimzo'),
-      total: [10, 50, 100, 1000]
+      total: [10, 25, 50, 100]
     },
     {
       name: 'Scotch Game',
       progress: getTotalGamesFromOpening('scotch'),
-      total: [10, 50, 100, 1000]
+      total: [10, 25, 50, 100]
     },
     {
       name: 'Italian Game',
       progress: getTotalGamesFromOpening('italian'),
-      total: [10, 50, 100, 1000]
+      total: [10, 25, 50, 100]
     },
     {
       name: 'Philidor Defense',
       progress: getTotalGamesFromOpening('philidor'),
-      total: [10, 50, 100, 1000]
+      total: [10, 25, 50, 100]
     },
     {
       name: 'Pirc Defense',
       progress: getTotalGamesFromOpening('pirc'),
-      total: [10, 50, 100, 1000]
+      total: [10, 25, 50, 100]
     },
     {
       name: 'Alekhine Defense',
       progress: getTotalGamesFromOpening('alekhine'),
-      total: [10, 50, 100, 1000]
+      total: [10, 25, 50, 100]
     },
     {
       name: 'Benoni Defense',
       progress: getTotalGamesFromOpening('benoti'),
-      total: [10, 50, 100, 1000]
+      total: [10, 25, 50, 100]
     },
     {
       name: 'Dutch Defense',
       progress: getTotalGamesFromOpening('dutch'),
-      total: [10, 50, 100, 1000]
+      total: [10, 25, 50, 100]
     },
     {
       name: 'English Opening',
       progress: getTotalGamesFromOpening('english'),
-      total: [10, 50, 100, 1000]
+      total: [10, 25, 50, 100]
     },
     {
       name: 'Grünfeld Defense',
       progress: getTotalGamesFromOpening('nfeld'),
-      total: [10, 50, 100, 1000]
+      total: [10, 25, 50, 100]
     },
     {
       name: 'Modern Defense',
       progress: getTotalGamesFromOpening('modern'),
-      total: [10, 50, 100, 1000]
+      total: [10, 25, 50, 100]
     },
     {
       name: 'Petrov Defense',
       progress: getTotalGamesFromOpening('petrov'),
-      total: [10, 50, 100, 1000]
+      total: [10, 25, 50, 100]
     },
     {
       name: 'Vienna Game',
       progress: getTotalGamesFromOpening('vienna'),
-      total: [10, 50, 100, 1000]
+      total: [10, 25, 50, 100]
     },
     {
       name: 'Two Knights Defense',
       progress: getTotalGamesFromOpening('two knights'),
-      total: [10, 50, 100, 1000]
+      total: [10, 25, 50, 100]
     }
   ]
 
