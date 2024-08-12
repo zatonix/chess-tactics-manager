@@ -42,11 +42,11 @@ export const UserDetails = ({ user }: UserProps) => {
     infosHasChanged(user)
   }, 1000)
 
-  return (
+  return (<>
     <MotionCard
       className={cn(
         'text-white bg-foreground border-l-4 border-r-0',
-        'border-t-0 border-b-0 border-primary rounded-none w-1/2'
+        'border-t-0 border-b-0 border-primary rounded-none col-span-12 xl:col-span-9 w-full'
       )}
       animate={{ x: 0, opacity: 1 }}
       initial={{ x: -50, opacity: 0 }}
@@ -141,5 +141,6 @@ export const UserDetails = ({ user }: UserProps) => {
         <LogoutButton />
       </CardContent>
     </MotionCard>
+    </>
   )
 }

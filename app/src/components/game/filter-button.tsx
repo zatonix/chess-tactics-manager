@@ -14,6 +14,8 @@ import { cn } from '@/lib/utils'
 import { Filter } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useGameStore } from './game.store'
+import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 const platformOptions: Option[] = [
   { label: 'chess.com', value: 'chesscom' },
@@ -49,13 +51,17 @@ const analysedOptions = [
 ]
 
 export const FilterButton = () => {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+
   const [open, setOpen] = useState(false)
   const [selectedFilters, setSelectedFilters] = useGameStore((state) => [state.filters, state.setFilters])
   const [editedFilters, setEditedFilters] = useState(selectedFilters)
-
+  
   const handleApplyFilters = () => {
     setSelectedFilters(editedFilters)
     setOpen(false)
+    handlePageChange()
   }
 
   const handleClearFilters = () => {
@@ -70,6 +76,7 @@ export const FilterButton = () => {
     setEditedFilters(emptyFilters)
     setSelectedFilters(emptyFilters)
     setOpen(false)
+    handlePageChange()
   }
 
   const handleChangeOpen = (newOpen: boolean) => {
@@ -87,6 +94,17 @@ export const FilterButton = () => {
       selectedFilters.adversary.length > 0
     )
   }, [selectedFilters])
+
+  const handlePageChange = () => {
+    // get current search params page
+    const currentPage = searchParams ? searchParams.get('page') : null
+    if (currentPage && searchParams) {
+      // set search params page to 1
+      const params = new URLSearchParams(searchParams.toString())
+      params.set('page', '1')
+      router.push(`?${params.toString()}`, undefined)
+    }
+  }
 
   return (
     <Dialog open={open} onOpenChange={handleChangeOpen}>

@@ -12,13 +12,11 @@ import {
   getCoreRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import {
-  Crown,
-  Minus,
-  Skull
-} from 'lucide-react'
+import { ChevronsLeft, ChevronsRight, Crown, Minus, Skull } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { Button } from '@/components/ui/button'
 import { GameCategoryIcon } from './game-category-icon'
 import { useGameStore } from './game.store'
 import { NoGameFound } from './no-game-found'
@@ -57,26 +55,25 @@ const columns = [
     cell: (props: any) => (
       <div className='flex flex-col gap-1'>
         <div className='flex justify-center align-baseline gap-1'>
-          <div className='h-full m-auto mx-1' >
+          <div className='h-full m-auto mx-1'>
             {props.row.original.winner === 'white' ? (
               <Crown size={15} />
             ) : props.row.original.winner === 'black' ? (
               <Skull size={15} />
             ) : (
-              <Minus size={15}/>
+              <Minus size={15} />
             )}
           </div>
-          <div className='h-full' >{props.row.original.whiteRating}</div>
+          <div className='h-full'>{props.row.original.whiteRating}</div>
         </div>
         <div className='flex justify-center align-baseline gap-1'>
-          
           <div className='h-full m-auto mx-1'>
             {props.row.original.winner === 'black' ? (
               <Crown size={15} />
             ) : props.row.original.winner === 'white' ? (
-              <Skull size={15} /> 
+              <Skull size={15} />
             ) : (
-              <Minus size={15}/>
+              <Minus size={15} />
             )}
           </div>
           <div className='h-full'>{props.row.original.blackRating}</div>
@@ -140,11 +137,28 @@ const columns = [
 interface LatestGamesTableProps {
   chessAccounts: ChessAccount[]
   initialGames: Game[]
+  pagination?: boolean
+  page?: number
+  maxPage?: number
+  gamesPerPage?: number
+  enabledPreview?: boolean
 }
 
-export const LatestGamesTable = ({ chessAccounts, initialGames }: LatestGamesTableProps) => {
+export const LatestGamesTable = ({
+  chessAccounts,
+  initialGames,
+  pagination = true,
+  page = 1,
+  maxPage = 1,
+  gamesPerPage = 10,
+  enabledPreview = true
+}: LatestGamesTableProps) => {
   const [data, setData] = useState(() => [...initialGames])
-  const [selected, setSelected] = useGameStore((state) => [state.game, state.setGame])
+  const [lastPage, setLastPage] = useState(maxPage)
+  const [selected, setSelected] = useGameStore((state) => [
+    state.game,
+    state.setGame
+  ])
   const selectedFilters = useGameStore((state) => state.filters)
 
   useEffect(() => {
@@ -152,13 +166,15 @@ export const LatestGamesTable = ({ chessAccounts, initialGames }: LatestGamesTab
       const games = await getFilteredGames(
         chessAccounts,
         selectedFilters,
-        10,
-        0
+        gamesPerPage,
+        (page - 1) * gamesPerPage
       )
+      const totalGames = await getFilteredGames(chessAccounts, selectedFilters)
+      setLastPage(Math.ceil(totalGames.length / gamesPerPage))
       setData(games)
     }
     fetchFilteredGames()
-  }, [selectedFilters, chessAccounts])
+  }, [selectedFilters, chessAccounts, page, gamesPerPage])
 
   const table = useReactTable({
     data,
@@ -171,7 +187,7 @@ export const LatestGamesTable = ({ chessAccounts, initialGames }: LatestGamesTab
   }
 
   return (
-    <div className='w-full p-0 overflow-y-scroll h-72'>
+    <div className='min-w-80 p-0 overflow-y-scroll size-full'>
       <table className='w-full'>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -201,11 +217,15 @@ export const LatestGamesTable = ({ chessAccounts, initialGames }: LatestGamesTab
                   'odd:bg-black border-l-4': selected === row.original
                 }
               )}
-              onClick={() => {
-                selected === row.original
-                  ? setSelected(null)
-                  : setSelected(row.original)
-              }}
+              onClick={
+                enabledPreview
+                  ? () => {
+                      selected === row.original
+                        ? setSelected(null)
+                        : setSelected(row.original)
+                    }
+                  : undefined
+              }
             >
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}>
@@ -216,6 +236,23 @@ export const LatestGamesTable = ({ chessAccounts, initialGames }: LatestGamesTab
           ))}
         </tbody>
       </table>
+      {pagination && (
+        <div className='flex justify-center w-full pt-4 gap-1'>
+          <Link href={`/games?page=${page - 1}`}>
+            <Button disabled={page <= 1}>
+              <ChevronsLeft />
+            </Button>
+          </Link>
+          <Button className='bg-white/85' variant='secondary' disabled>
+            Page {page}
+          </Button>
+          <Link href={`/games?page=${page + 1}`}>
+            <Button disabled={page >= lastPage}>
+              <ChevronsRight />
+            </Button>
+          </Link>
+        </div>
+      )}
     </div>
   )
 }
