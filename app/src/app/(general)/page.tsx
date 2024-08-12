@@ -17,6 +17,8 @@ import {
   getWinPercentageLastSixMonths 
 } from '@/lib/stats/insights-data'
 import { cn } from '@/lib/utils'
+import Link from 'next/link'
+import React from 'react'
 
 const EMPTY_FILTERS: GameFilters = {
   providers: [],
@@ -63,14 +65,17 @@ export default async function DashboardPage() {
       >
         <CardHeader>
           <CardTitle className='flex w-full justify-between items-center'>
-            <div>Last games</div>
+              <Link href='/games' className='hover:underline'>
+                Latest Games
+              </Link>
             <FilterButton />
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className='h-72'>
           <LatestGamesTable 
             initialGames={games} 
             chessAccounts={chessAccounts} 
+            pagination={false}
           />
         </CardContent>
       </MotionCard>

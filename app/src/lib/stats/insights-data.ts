@@ -20,8 +20,8 @@ export const countTotalGames = async (
 export const getFilteredGames = async (
   chessAccounts: ChessAccount[],
   filters: GameFilters,
-  limit: number,
-  offset: number
+  limit?: number,
+  offset?: number
 ) => {
   const games = await prisma.game.findMany({
     where: {

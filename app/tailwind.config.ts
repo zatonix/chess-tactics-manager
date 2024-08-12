@@ -32,7 +32,9 @@ const config = {
         background: '#261F27',
         foreground: '#2E252A',
         active: '#DC8E08',
-        primary: '#AD6205',
+        primary: '#C96E1F',
+        // primary: '#1F86C9',
+        // primary: '#AD6205',
         white: '#F6DED2',
         black: '#211A22',
         chessBlack: '#283762',
@@ -83,7 +85,10 @@ const config = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [
+    require('tailwindcss-animate')
+    // require('daisyui')
+  ],
 } satisfies Config
 
 export default config
